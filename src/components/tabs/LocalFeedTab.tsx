@@ -33,7 +33,7 @@ export default function LocalFeedTab({
           <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
             Market <span className="text-[#00C853]">Stream</span>
           </h2>
-          <p className="text-zinc-500 font-medium mt-2 max-w-md">
+          <p className="text-zinc-500 font-medium mt-2 ">
             Decrypted local demands intercepted within your operational perimeter.
           </p>
         </div>

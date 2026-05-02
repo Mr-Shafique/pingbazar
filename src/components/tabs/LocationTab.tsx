@@ -32,7 +32,7 @@ export default function LocationTab({
           <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
             Establish <span className="text-[#7D12FF]">Zone</span>
           </h2>
-          <p className="text-zinc-500 font-medium mt-2 max-w-md">
+          <p className="text-zinc-500 font-medium mt-2">
             Define your operational perimeter to filter local demand signals.
           </p>
         </div>

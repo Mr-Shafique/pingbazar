@@ -37,7 +37,7 @@ export default function PostNeedTab({
         <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
           Broadcast <span className="text-[#FF4545]">Need</span>
         </h2>
-        <p className="text-zinc-500 font-medium mt-2 max-w-md">
+        <p className="text-zinc-500 font-medium mt-2 ">
           Distribute your product requirements to all verified nodes in the local grid.
         </p>
       </div>

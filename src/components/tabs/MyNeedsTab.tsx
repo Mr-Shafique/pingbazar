@@ -20,7 +20,7 @@ export default function MyNeedsTab({ myNeeds, allResponses }: MyNeedsTabProps) {
         <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
           Active <span className="text-[#7D12FF]">Broadcasts</span>
         </h2>
-        <p className="text-zinc-500 font-medium mt-2 max-w-md">
+        <p className="text-zinc-500 font-medium mt-2 ">
           Manage your outgoing signals and monitor incoming fulfillment offers.
         </p>
       </div>
