@@ -38,10 +38,10 @@ export default function LocalFeedTab({
           </p>
         </div>
         
-        <div className="flex items-center gap-3 px-6 py-4 bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] font-mono text-xs font-black uppercase tracking-widest">
+        {/* <div className="flex items-center gap-3 px-6 py-4 bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] font-mono text-xs font-black uppercase tracking-widest">
           <div className="w-2.5 h-2.5 bg-[#00C853] rounded-full animate-pulse"></div>
           Scanning_Network...
-        </div>
+        </div> */}
       </div>
 
       {feedRequests.length === 0 ? (

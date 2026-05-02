@@ -50,7 +50,7 @@ export default function LocationTab({
                 <p className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-widest text-zinc-400">
                   Current Anchor Point
                 </p>
-                <h3 className="font-['Space_Grotesk'] text-2xl font-black text-black truncate max-w-75">
+                <h3 className="font-['Space_Grotesk'] text-2xl font-black text-black  max-w-75">
                   {city || "Locating..."}
                 </h3>
               </div>

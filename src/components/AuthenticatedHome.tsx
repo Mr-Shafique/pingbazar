@@ -233,6 +233,37 @@ export default function AuthenticatedHome({
 
   // Map Picker Modal state
   const [showMapPicker, setShowMapPicker] = useState(false);
+  const [mapPickerTarget, setMapPickerTarget] = useState<"search" | "shop">(
+    "search",
+  );
+
+  // Custom Alert state
+  const [customAlert, setCustomAlert] = useState<{
+    show: boolean;
+    title: string;
+    message: string;
+    type: "info" | "success" | "error";
+  }>({
+    show: false,
+    title: "",
+    message: "",
+    type: "info",
+  });
+
+  const triggerAlert = (
+    message: string,
+    title: string = "System Message",
+    type: "info" | "success" | "error" = "info",
+  ) => {
+    setCustomAlert({ show: true, message, title, type });
+  };
+
+  // Auto-close map picker if fulfillment modal opens
+  // useEffect(() => {
+  //   if (respondingToRequest) {
+  //     setShowMapPicker(false);
+  //   }
+  // }, [respondingToRequest]);
 
   // Persistence of simple non-cascading state
   useEffect(() => {
@@ -361,7 +392,11 @@ export default function AuthenticatedHome({
 
   const handleSaveCriteria = () => {
     if (!city || !lat || !lng) {
-      alert("Please fill in a valid city name, latitude and longitude.");
+      triggerAlert(
+        "Please fill in a valid city name, latitude and longitude.",
+        "Input Required",
+        "error",
+      );
       return;
     }
     localStorage.setItem("pingbazar_city", city);
@@ -369,8 +404,10 @@ export default function AuthenticatedHome({
     localStorage.setItem("pingbazar_lat", lat);
     localStorage.setItem("pingbazar_lng", lng);
 
-    alert(
+    triggerAlert(
       "Search criteria updated! Nearby requests will now refresh in your feed.",
+      "Sync Complete",
+      "success",
     );
     setActiveTab("feed");
   };
@@ -380,13 +417,17 @@ export default function AuthenticatedHome({
     newLat: string,
     newLng: string,
   ) => {
-    setCity(newCity || "Selected Location");
-    setLat(newLat);
-    setLng(newLng);
-    localStorage.setItem("pingbazar_city", newCity || "Selected Location");
-    localStorage.setItem("pingbazar_lat", newLat);
-    localStorage.setItem("pingbazar_lng", newLng);
-    localStorage.setItem("pingbazar_radius", radius);
+    if (mapPickerTarget === "shop") {
+      setShopAddress(newCity || "Selected Location");
+    } else {
+      setCity(newCity || "Selected Location");
+      setLat(newLat);
+      setLng(newLng);
+      localStorage.setItem("pingbazar_city", newCity || "Selected Location");
+      localStorage.setItem("pingbazar_lat", newLat);
+      localStorage.setItem("pingbazar_lng", newLng);
+      localStorage.setItem("pingbazar_radius", radius);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -402,8 +443,14 @@ export default function AuthenticatedHome({
 
   const handleCreateRequest = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!requestTitle || !requestDesc)
-      return alert("Please include a title and description.");
+    if (!requestTitle || !requestDesc) {
+      triggerAlert(
+        "Please include a title and description.",
+        "Incomplete Data",
+        "error",
+      );
+      return;
+    }
     if (!user) return;
 
     try {
@@ -424,11 +471,15 @@ export default function AuthenticatedHome({
       setRequestTitle("");
       setRequestDesc("");
       setBase64Image("");
-      alert("Your product request was posted successfully!");
+      triggerAlert(
+        "Your product request was posted successfully!",
+        "Broadcast Active",
+        "success",
+      );
       setActiveTab("my-needs");
     } catch (err) {
       console.error(err);
-      alert("Error posting request: " + err);
+      triggerAlert("Error posting request: " + err, "Transmission Failed", "error");
     } finally {
       setSubmitting(false);
     }
@@ -436,19 +487,23 @@ export default function AuthenticatedHome({
 
   const handleSaveSellerProfile = () => {
     if (!shopName || !shopPhone || !shopAddress) {
-      alert("Please enter all seller information.");
+      triggerAlert("Please enter all seller information.", "Profile Incomplete", "error");
       return;
     }
     localStorage.setItem("pingbazar_shop_name", shopName);
     localStorage.setItem("pingbazar_shop_phone", shopPhone);
     localStorage.setItem("pingbazar_shop_address", shopAddress);
-    alert("Seller details updated successfully!");
+    triggerAlert("Seller details updated successfully!", "Profile Synced", "success");
   };
 
   const handleConfirmResponse = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!shopName || !shopPhone || !shopAddress) {
-      alert("Please provide your shop information before accepting.");
+      triggerAlert(
+        "Please provide your shop information before accepting.",
+        "Missing Credentials",
+        "error",
+      );
       return;
     }
     if (!respondingToRequest || !user) return;
@@ -458,7 +513,11 @@ export default function AuthenticatedHome({
         res.requestId === respondingToRequest.id && res.sellerId === user.uid,
     );
     if (alreadyResponded) {
-      alert("You have already responded to this request.");
+      triggerAlert(
+        "You have already responded to this request.",
+        "Duplicate Signal",
+        "info",
+      );
       setRespondingToRequest(null);
       return;
     }
@@ -482,12 +541,14 @@ export default function AuthenticatedHome({
       localStorage.setItem("pingbazar_shop_address", shopAddress);
 
       setRespondingToRequest(null);
-      alert(
+      triggerAlert(
         "Offer sent! The buyer can now view your shop and contact details.",
+        "Sync Success",
+        "success",
       );
     } catch (err) {
       console.error(err);
-      alert("Error responding to request: " + err);
+      triggerAlert("Error responding to request: " + err, "Sync Failed", "error");
     } finally {
       setSubmittingResponse(false);
     }
@@ -645,7 +706,10 @@ export default function AuthenticatedHome({
               lng={lng} 
               radius={radius} 
               setRadius={setRadius} 
-              onShowMap={() => setShowMapPicker(true)} 
+              onShowMap={() => {
+                setMapPickerTarget("search");
+                setShowMapPicker(true);
+              }} 
               onSave={handleSaveCriteria}
             />
           )}
@@ -687,6 +751,10 @@ export default function AuthenticatedHome({
               shopAddress={shopAddress}
               setShopAddress={setShopAddress}
               onSave={handleSaveSellerProfile}
+              onShowMap={() => {
+                setMapPickerTarget("shop");
+                setShowMapPicker(true);
+              }}
             />
           )}
         </div>
@@ -704,35 +772,143 @@ export default function AuthenticatedHome({
 
       {/* Responder Details Modal */}
       {respondingToRequest && (
-        <div className="fixed inset-0 z-20000 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[20000] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setRespondingToRequest(null)}></div>
-          <div className="bg-white border-4 border-black p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-full max-w-lg animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setRespondingToRequest(null)} className="absolute top-4 right-4 text-black hover:text-red-500 transition-colors cursor-pointer text-3xl font-black leading-none">&times;</button>
-            <h3 className="font-['Space_Grotesk'] text-2xl font-black text-black uppercase mb-1">Fulfillment Signal</h3>
-            <p className="text-zinc-500 text-sm font-medium mb-8">Synchronize your merchant node data.</p>
+          <div 
+            className="bg-white border-[6px] border-black p-6 sm:p-10 relative shadow-[16px_16px_0px_0px_black] z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar animate-in zoom-in-95 duration-200" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header - Protocol Style */}
+            <div className="w-full border-b-[4px] border-black pb-8 mb-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="px-3 py-1 bg-black text-white text-[10px] font-mono font-black uppercase tracking-[0.2em] shadow-[4px_4px_0px_0px_#7D12FF]">
+                  TRADE_PROTOCOL_INIT
+                </span>
+                <div className="h-[2px] grow bg-zinc-100"></div>
+                <button 
+                  onClick={() => setRespondingToRequest(null)} 
+                  className="w-10 h-10 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-all cursor-pointer shadow-[2px_2px_0px_0px_black] active:shadow-none"
+                >
+                  <span className="material-symbols-outlined font-black text-[20px]">close</span>
+                </button>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <h3 className="font-['Space_Grotesk'] text-4xl font-black text-black uppercase tracking-tighter shrink-0">
+                  Fulfillment <span className="text-[#7D12FF]">Signal</span>
+                </h3>
+                <p className="text-zinc-500 font-bold text-xs uppercase tracking-widest bg-zinc-50 border-2 border-black px-3 py-1.5 shadow-[2px_2px_0px_0px_black]">
+                  REQ_ID: {respondingToRequest.id.slice(0,8)}
+                </p>
+              </div>
+            </div>
 
-            <form onSubmit={handleConfirmResponse} className="flex flex-col gap-6">
-              <div className="flex flex-col gap-2">
-                <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Shop Identifier</label>
-                <input type="text" required value={shopName} onChange={(e) => setShopName(e.target.value)} className="w-full bg-zinc-50 border-2 border-black p-3 font-['Space_Grotesk'] font-bold text-base focus:outline-none focus:bg-white transition-all"/>
+            <p className="text-zinc-500 font-medium mb-10 leading-relaxed ">
+              Synchronize your merchant node credentials to the local grid. This will initiate a direct 
+              communication link with the requesting buyer.
+            </p>
+
+            <form onSubmit={handleConfirmResponse} className="flex flex-col gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Info Card: Merchant */}
+                <div className="md:col-span-2 p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="material-symbols-outlined text-sm text-[#7D12FF]">store</span>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Merchant Identifier</label>
+                  </div>
+                  <p className="font-['Space_Grotesk'] font-black text-xl text-black uppercase truncate">
+                    {shopName || "UNDEFINED_NODE"}
+                  </p>
+                </div>
+
+                {/* Info Card: Comms */}
+                <div className="p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="material-symbols-outlined text-sm text-[#7D12FF]">call</span>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Secure Comms Link</label>
+                  </div>
+                  <p className="font-mono font-black text-lg text-black">
+                    {shopPhone || "000-000-0000"}
+                  </p>
+                </div>
+
+                {/* Info Card: Extraction */}
+                <div className="p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="material-symbols-outlined text-sm text-[#7D12FF]">pin_drop</span>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Extraction Point</label>
+                  </div>
+                  <p className="font-['Space_Grotesk'] font-bold text-sm text-black truncate">
+                    {shopAddress || "UNDEFINED_LOCATION"}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Comms Number</label>
-                <input type="tel" required value={shopPhone} onChange={(e) => setShopPhone(e.target.value)} className="w-full bg-zinc-50 border-2 border-black p-3 font-mono font-bold text-base focus:outline-none focus:bg-white transition-all"/>
+
+              <div className="pt-4 space-y-4">
+                <div className="p-4 bg-[#7D12FF]/5 border-l-4 border-[#7D12FF] flex items-start gap-3">
+                  <span className="material-symbols-outlined text-[#7D12FF] text-[20px]">info</span>
+                  <p className="text-[11px] text-[#7D12FF] font-bold uppercase leading-tight tracking-wide">
+                    Verification Complete: The credentials above will be broadcasted to the buyer node to initialize the secure trade link.
+                  </p>
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={submittingResponse || !shopName || !shopAddress} 
+                  className="w-full py-5 bg-black text-white border-[4px] border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[8px_8px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center gap-4 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                >
+                  {submittingResponse ? "TRANSMITTING..." : (
+                    <>
+                      Initialize Trade Sync
+                      <span className="material-symbols-outlined text-[24px]">sensors</span>
+                    </>
+                  )}
+                </button>
+                
+                <button 
+                  type="button"
+                  onClick={() => setActiveTab("seller-profile")}
+                  className="w-full py-3 border-2 border-black font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-[0.2em] hover:bg-zinc-50 transition-all flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[16px]">edit_note</span>
+                  Modify merchant Profile
+                </button>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Extraction Point</label>
-                <input type="text" required value={shopAddress} onChange={(e) => setShopAddress(e.target.value)} className="w-full bg-zinc-50 border-2 border-black p-3 font-['Space_Grotesk'] font-bold text-base focus:outline-none focus:bg-white transition-all"/>
-              </div>
-              <button type="submit" disabled={submittingResponse} className="w-full py-4 bg-black text-white border-2 border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[6px_6px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1">
-                {submittingResponse ? "Syncing..." : "Initialize Trade"}
-              </button>
             </form>
           </div>
         </div>
       )}
 
       <MapPickerModal isOpen={showMapPicker} onClose={() => setShowMapPicker(false)} onConfirm={handleMapLocationConfirm} initialLat={lat} initialLng={lng} />
+
+      {/* Custom Alert Modal */}
+      {customAlert.show && (
+        <div className="fixed inset-0 z-[30000] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}></div>
+          <div className="bg-white border-4 border-black p-6 sm:p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-full max-w-md animate-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-3 mb-4">
+              <div className={`w-3 h-3 rounded-full ${
+                customAlert.type === "success" ? "bg-green-500" : 
+                customAlert.type === "error" ? "bg-red-500" : "bg-[#7D12FF]"
+              }`}></div>
+              <h4 className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-[0.2em] text-zinc-400">
+                {customAlert.title}
+              </h4>
+            </div>
+            
+            <p className="font-['Space_Grotesk'] font-bold text-lg text-black mb-8 leading-tight">
+              {customAlert.message}
+            </p>
+
+            <button 
+              onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}
+              className="w-full py-4 bg-black text-white border-2 border-black font-['Space_Grotesk'] font-black uppercase tracking-widest text-xs hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[4px_4px_0px_0px_black] active:shadow-none active:translate-x-0.5 active:translate-y-0.5"
+            >
+              Acknowledge
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
