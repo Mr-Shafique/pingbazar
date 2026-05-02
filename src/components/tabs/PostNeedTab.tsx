@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React from "react";
@@ -20,7 +21,6 @@ export default function PostNeedTab({
   requestDesc,
   setRequestDesc,
   base64Image,
-  setBase64Image,
   submitting,
   onCreateRequest,
   handleImageUpload,
@@ -32,7 +32,7 @@ export default function PostNeedTab({
           <span className="px-2 py-0.5 bg-black text-white text-[10px] font-mono font-black uppercase tracking-widest">
             STEP_02
           </span>
-          <div className="h-[2px] w-8 bg-black"></div>
+          <div className="h-0.5 w-8 bg-black"></div>
         </div>
         <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
           Broadcast <span className="text-[#FF4545]">Need</span>
@@ -45,7 +45,7 @@ export default function PostNeedTab({
       <form onSubmit={onCreateRequest} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Detail Input Area */}
         <div className="lg:col-span-7 flex flex-col gap-6">
-          <div className="p-8 bg-white border-[4px] border-black shadow-[8px_8px_0px_0px_black] space-y-6">
+          <div className="p-8 bg-white border-4 border-black shadow-[8px_8px_0px_0px_black] space-y-6">
             <div className="space-y-2">
               <label className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-widest text-zinc-400 ml-1">
                 Requirement Headline
@@ -78,7 +78,7 @@ export default function PostNeedTab({
 
         {/* Visual Capture Area */}
         <div className="lg:col-span-5 flex flex-col gap-6">
-          <div className="grow bg-white border-[4px] border-black shadow-[8px_8px_0px_0px_black] relative group overflow-hidden flex flex-col">
+          <div className="grow bg-white border-4 border-black shadow-[8px_8px_0px_0px_black] relative group overflow-hidden flex flex-col">
             <input
               type="file"
               accept="image/*"
@@ -86,9 +86,11 @@ export default function PostNeedTab({
               className="absolute inset-0 opacity-0 cursor-pointer z-30"
             />
             
-            <div className={`relative h-[300px] lg:h-full flex flex-col items-center justify-center transition-all ${base64Image ? 'bg-black' : 'bg-zinc-50'}`}>
+            <div className={`relative h-75 lg:h-full flex flex-col items-center justify-center transition-all ${base64Image ? 'bg-black' : 'bg-zinc-50'}`}>
               {base64Image ? (
+                // eslint-disable-next-line react/jsx-no-comment-textnodes
                 <div className="w-full h-full p-4 relative">
+                  // eslint-disable-next-line @next/next/no-img-element, @next/next/no-img-element, @next/next/no-img-element
                   <img
                     src={base64Image}
                     alt="Payload Evidence"
@@ -115,7 +117,7 @@ export default function PostNeedTab({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-6 bg-[#FF4545] text-white border-[4px] border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_black] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer disabled:opacity-50 flex items-center justify-center gap-4"
+            className="w-full py-6 bg-[#FF4545] text-white border-4 border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_black] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer disabled:opacity-50 flex items-center justify-center gap-4"
           >
             {submitting ? "Processing..." : (
               <>

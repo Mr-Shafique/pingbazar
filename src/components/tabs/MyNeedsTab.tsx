@@ -15,7 +15,7 @@ export default function MyNeedsTab({ myNeeds, allResponses }: MyNeedsTabProps) {
           <span className="px-2 py-0.5 bg-black text-white text-[10px] font-mono font-black uppercase tracking-widest">
             NODE_INVENTORY
           </span>
-          <div className="h-[2px] w-8 bg-black"></div>
+          <div className="h-0.5 w-8 bg-black"></div>
         </div>
         <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
           Active <span className="text-[#7D12FF]">Broadcasts</span>
@@ -26,24 +26,25 @@ export default function MyNeedsTab({ myNeeds, allResponses }: MyNeedsTabProps) {
       </div>
 
       {myNeeds.length === 0 ? (
-        <div className="py-24 flex flex-col items-center text-center bg-[#fdfdfd] border-[4px] border-black border-dashed shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
+        <div className="py-24 flex flex-col items-center text-center bg-[#fdfdfd] border-4 border-black border-dashed shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
           <div className="w-20 h-20 bg-zinc-50 border-2 border-black flex items-center justify-center -rotate-3 mb-6">
             <span className="material-symbols-outlined text-4xl text-zinc-300">shopping_bag</span>
           </div>
           <h3 className="font-['Space_Grotesk'] text-xl font-black text-black uppercase mb-2">Inventory Empty</h3>
-          <p className="text-zinc-400 text-sm max-w-xs font-medium">You haven't broadcasted any needs yet. Head to the Broadcast tab to start.</p>
+          <p className="text-zinc-400 text-sm max-w-xs font-medium">You haven&apos;t broadcasted any needs yet. Head to the Broadcast tab to start.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-10">
           {myNeeds.map((need) => {
             const responses = allResponses.filter((res) => res.requestId === need.id);
             return (
-              <div key={need.id} className="bg-white border-[4px] border-black shadow-[12px_12px_0px_0px_black] overflow-hidden group">
+              <div key={need.id} className="bg-white border-4 border-black shadow-[12px_12px_0px_0px_black] overflow-hidden group">
                 <div className="grid grid-cols-1 lg:grid-cols-12">
                   {/* Left: Request Data */}
-                  <div className="lg:col-span-4 bg-zinc-50 border-b-[4px] lg:border-b-0 lg:border-r-[4px] border-black p-8">
+                  <div className="lg:col-span-4 bg-zinc-50 border-b-4 lg:border-b-0 lg:border-r-4 border-black p-8">
                     <div className="aspect-square bg-white border-2 border-black mb-6 relative overflow-hidden flex items-center justify-center shadow-[4px_4px_0px_0px_black]">
                       {need.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
                         <img src={need.image} alt={need.title} className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform" />
                       ) : (
                         <span className="material-symbols-outlined text-6xl text-zinc-200">image_not_supported</span>
@@ -82,7 +83,7 @@ export default function MyNeedsTab({ myNeeds, allResponses }: MyNeedsTabProps) {
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {responses.map((res) => (
-                          <div key={res.id} className="p-6 bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_black] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0px_0px_#7D12FF] transition-all">
+                          <div key={res.id} className="p-6 bg-white border-[3px] border-black shadow-[6px_6px_0px_0px_black] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_#7D12FF] transition-all">
                             <div className="flex items-center gap-3 mb-5">
                               <div className="w-10 h-10 bg-black flex items-center justify-center text-white shrink-0">
                                 <span className="material-symbols-outlined text-lg">store</span>
