@@ -1,0 +1,168 @@
+      <>
+
+
+<nav className="bg-white dark:bg-zinc-900 border-b-4 border-black dark:border-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sticky top-0 w-full z-50 flex justify-between items-center px-8 py-6">
+<div className="flex items-center gap-12">
+<a className="text-4xl font-black text-black dark:text-white italic tracking-widest text-[#7D12FF] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none" href="#">PingBazar</a>
+<div className="hidden md:flex items-center gap-6 font-['Space_Grotesk'] font-bold uppercase tracking-tighter">
+<a className="text-black dark:text-white px-3 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none" href="#">Post a Need</a>
+<a className="text-black dark:text-white px-3 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none" href="#">Browse Needs</a>
+<a className="text-black dark:text-white px-3 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none" href="#">Local Sellers</a>
+<a className="text-black dark:text-white px-3 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none" href="#">Community</a>
+</div>
+</div>
+<div className="flex items-center gap-4 font-['Space_Grotesk'] font-bold uppercase tracking-tighter">
+<Link href="/login" className="text-black dark:text-white px-3 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none">Login</Link>
+<Link href="/signup" className="bg-[#7D12FF] text-white border-2 border-black px-6 py-2 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none inline-block">Get Started</Link>
+</div>
+</nav>
+<main className="flex-grow w-full max-w-[1440px] mx-auto px-gutter py-xl">
+
+<section className="grid grid-cols-12 gap-gutter mb-xl items-center">
+<div className="col-span-12 md:col-span-10 md:col-start-2 text-center flex flex-col items-center relative">
+<div className="hidden lg:block absolute -top-10 -left-12 w-32 h-32 rotate-[-15deg] z-0 animate-bounce" >
+<img alt="3D Shopping Bag" className="w-full h-full object-contain drop-shadow-[8px_8px_0px_rgba(0,0,0,1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjTNaNvqwHdgPZSvH1b-ALq40BKTGfAssdCwpAlXeM907_ellL6cGier5bdjjmq1jFbL0YKfxxLc4Nllcl0bMzLw1pOAzN7_qFsTqcc7fXuk0HkZDBvFE7oqbSRJXTIaCKr8Yka98rZGSFpOoggvmswE5HZTj-cq8SkJNCplnoKTCPuAyVzYgbxKdLFO2oDW7Swy668lLxTb9YvXC2OXkkYSoMa5a2_ub7Ko0R1A9s-fFsPwxWQInkq4FZ_0E55iQ2hAaFf7ak9cZ5"/>
+</div>
+<div className="hidden lg:block absolute top-20 -right-16 w-24 h-24 rotate-[20deg] z-0 animate-bounce" >
+<img alt="3D Price Tag" className="w-full h-full object-contain drop-shadow-[6px_6px_0px_rgba(0,0,0,1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzqgItwsrOprFWTw3vWU8FbqGwwwm4vvL3coiRysC3DwLDFi9IjhaknI_SCUDtzpf64HwBmJR6A4ybDhYv8s6cfuvPsjTC-1jCG4D3-9EJ7jM3R4ZTq5EBxc7fuQCKkLN8o0do-CURJqN2LFiY0GnShHR4bJRSQRo4aKoZZ3-RGx69FjYIJfNRMk1PT2XH8vPOeR12qLxRdcz787DC855g2XOrFYU4BOa0Jrp0MT1S-vCCUSKE-no83pZLWaClUnAoE0BZxVmvW6Oa"/>
+</div>
+<div className="hidden lg:block absolute -bottom-10 left-1/4 w-28 h-28 rotate-[10deg] z-0 animate-pulse" >
+<img alt="3D Parcel" className="w-full h-full object-contain drop-shadow-[10px_10px_0px_rgba(0,0,0,1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbTOLc0na9FFl2HBopnZA8CG9ylDy7Dt_qkfsSHNRh9B7L1i8NxFSge-lphH4x39pihGh9g7UtkngEyoSCKwrnan2Nmgkwp6Y-CVWzot1BKVtDqz8b5qjDsj_3fN8V0fWRDupqBPTZm45QQF2Lm1gZY0u6VBKQJS9lETXSuqxmYW4ODs9II8jJM-1ChtXUVj_v5wpvYMTPDXNNonXlkYvbogpTKC00GoxVVedm83MRK7BkbFThLxqvIbKuIQtEmMa0KLOa1iCMMbvY"/>
+</div>
+<div className="hidden lg:block absolute top-0 left-3/4 w-20 h-20 rotate-[-10deg] z-0 animate-bounce" >
+<img alt="3D Product" className="w-full h-full object-contain drop-shadow-[5px_5px_0px_rgba(0,0,0,1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTn5_MH7SsdydCEdEtjBCRBVGT0NdD6baMl6Bux-vTBtrEAwfrxkS9dlk_HI6_b9nIrBfg7ckkgA3Adm-7KxNBEG1EfTDu_99kxSIUhVxn7GMbbbIDkjfWTwtaAW-UdXz8fkWBMP3HtdNnCdCJqxwgMAaMJ2boOpSBDRaEKcG1uQ57RqI0_8XHDgPoDgzYZQOW-jS-x4kLQtpO01WJ26RhDYAEl3ANiPODyGMAFuXvYJUuerOCV9Lzlr0OM0-toBsjIAHpm2bqoucm"/>
+</div>
+<h1 className="font-display-xl text-display-xl text-on-secondary-fixed uppercase tracking-tighter mb-md leading-none relative z-10">
+                    Post what you want,<br/>let sellers find <span className="text-primary-container inline-block translate-y-2">YOU.</span>
+</h1>
+<div className="w-full max-w-4xl relative mt-lg">
+<div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+<span className="material-symbols-outlined text-4xl text-on-secondary-fixed font-bold">search</span>
+</div>
+<input className="w-full bg-surface-container-lowest brutalist-border-thick brutalist-shadow-lg text-headline-md font-headline-md py-6 pl-20 pr-48 placeholder-on-secondary-container focus:outline-none focus:ring-0 focus:border-primary-container transition-colors rounded-none" placeholder="I NEED A VINTAGE LEATHER JACKET..." type="text"/>
+<button className="absolute right-2 top-2 bottom-2 bg-primary-container text-white font-button-text text-button-text uppercase px-8 brutalist-border brutalist-shadow-hover transition-all rounded-none">
+                        Broadcast
+                    </button>
+</div>
+<div className="mt-xs flex gap-4 font-meta-mono text-meta-mono text-on-surface-variant uppercase">
+<span>Popular:</span>
+<a className="underline decoration-2 hover:text-primary-container" href="#">DJ Equipment</a>
+<a className="underline decoration-2 hover:text-primary-container" href="#">Plumbing</a>
+<a className="underline decoration-2 hover:text-primary-container" href="#">Used Cars</a>
+</div>
+</div>
+</section>
+
+<section className="mb-xl">
+<div className="flex justify-between items-end border-b-4 border-on-secondary-fixed pb-4 mb-lg">
+<h2 className="font-headline-lg text-headline-lg text-on-secondary-fixed uppercase">Protocol Sequence</h2>
+<span className="font-meta-mono text-meta-mono text-on-surface-variant">[HOW_IT_WORKS_V1]</span>
+</div>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+
+<div className="bg-surface-container-lowest brutalist-border brutalist-shadow-lg p-8 relative hover:-translate-y-2 transition-transform duration-300">
+<div className="absolute -top-6 -left-6 bg-primary-container text-white font-display-xl text-display-xl w-24 h-24 flex items-center justify-center brutalist-border z-10">1</div>
+<div className="mt-12">
+<h3 className="font-headline-md text-headline-md uppercase mb-4">Request</h3>
+<p className="font-body-lg text-body-lg text-on-surface-variant">Broadcast your exact requirement to the network. No browsing endless feeds. Specify price, condition, and timeline.</p>
+</div>
+<div className="mt-8 border-t-2 border-dashed border-on-secondary-fixed pt-4 flex justify-between items-center font-meta-mono text-meta-mono">
+<span>STATUS: ACTIVE</span>
+<span className="material-symbols-outlined">cell_tower</span>
+</div>
+</div>
+
+<div className="bg-surface-container-lowest brutalist-border brutalist-shadow-lg p-8 relative hover:-translate-y-2 transition-transform duration-300 mt-12 md:mt-0">
+<div className="absolute -top-6 -left-6 bg-white text-on-secondary-fixed font-display-xl text-display-xl w-24 h-24 flex items-center justify-center brutalist-border z-10">2</div>
+<div className="mt-12">
+<h3 className="font-headline-md text-headline-md uppercase mb-4">Match</h3>
+<p className="font-body-lg text-body-lg text-on-surface-variant">Verified sellers holding your requested inventory are pinged instantly. They submit aggressive offers directly to your inbox.</p>
+</div>
+<div className="mt-8 border-t-2 border-dashed border-on-secondary-fixed pt-4 flex justify-between items-center font-meta-mono text-meta-mono">
+<span>INBOUND: PENDING</span>
+<span className="material-symbols-outlined">radar</span>
+</div>
+</div>
+
+<div className="bg-primary-container text-white brutalist-border brutalist-shadow-lg p-8 relative hover:-translate-y-2 transition-transform duration-300 mt-12 md:mt-0">
+<div className="absolute -top-6 -left-6 bg-on-secondary-fixed text-white font-display-xl text-display-xl w-24 h-24 flex items-center justify-center brutalist-border border-white z-10">3</div>
+<div className="mt-12">
+<h3 className="font-headline-md text-headline-md uppercase mb-4 text-white">Shop</h3>
+<p className="font-body-lg text-body-lg text-on-primary-container">Compare inbound bids. Choose the optimal deal based on price, proximity, and seller reputation. Execute transaction.</p>
+</div>
+<div className="mt-8 border-t-2 border-dashed border-white pt-4 flex justify-between items-center font-meta-mono text-meta-mono text-white">
+<span>EXECUTION: READY</span>
+<span className="material-symbols-outlined">shopping_cart_checkout</span>
+</div>
+</div>
+</div>
+</section>
+
+<section className="mb-xl">
+<div className="flex justify-between items-end border-b-4 border-on-secondary-fixed pb-4 mb-lg">
+<h2 className="font-headline-lg text-headline-lg text-on-secondary-fixed uppercase">Active Nodes</h2>
+<button className="font-button-text text-button-text bg-white brutalist-border px-4 py-2 uppercase brutalist-shadow-hover">View Map</button>
+</div>
+<div className="grid grid-cols-12 gap-0 brutalist-border-thick bg-white">
+
+<div className="col-span-12 grid grid-cols-12 border-b-2 border-on-secondary-fixed bg-surface-container-highest font-meta-mono text-meta-mono uppercase">
+<div className="col-span-2 p-4 border-r-2 border-on-secondary-fixed">ID</div>
+<div className="col-span-4 p-4 border-r-2 border-on-secondary-fixed">Request</div>
+<div className="col-span-3 p-4 border-r-2 border-on-secondary-fixed">Location</div>
+<div className="col-span-3 p-4">Bids</div>
+</div>
+
+<div className="col-span-12 grid grid-cols-12 border-b-2 border-on-secondary-fixed hover:bg-surface transition-colors cursor-pointer group">
+<div className="col-span-2 p-4 border-r-2 border-on-secondary-fixed font-meta-mono flex items-center group-hover:text-primary-container">#REQ-892</div>
+<div className="col-span-4 p-4 border-r-2 border-on-secondary-fixed font-button-text text-button-text uppercase truncate">2018 Macbook Pro 15"</div>
+<div className="col-span-3 p-4 border-r-2 border-on-secondary-fixed font-body-md flex items-center gap-2">
+<span className="material-symbols-outlined text-[18px]">location_on</span> 1.2mi Away
+                    </div>
+<div className="col-span-3 p-4 flex items-center justify-between">
+<div className="bg-primary-container text-white px-3 py-1 font-meta-mono text-meta-mono brutalist-border">4 OFFERS</div>
+<span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+
+<div className="col-span-12 grid grid-cols-12 border-b-2 border-on-secondary-fixed hover:bg-surface transition-colors cursor-pointer group">
+<div className="col-span-2 p-4 border-r-2 border-on-secondary-fixed font-meta-mono flex items-center group-hover:text-primary-container">#REQ-893</div>
+<div className="col-span-4 p-4 border-r-2 border-on-secondary-fixed font-button-text text-button-text uppercase truncate text-on-surface-variant">Electric Guitar Setup (Urgent)</div>
+<div className="col-span-3 p-4 border-r-2 border-on-secondary-fixed font-body-md flex items-center gap-2">
+<span className="material-symbols-outlined text-[18px]">location_on</span> 3.4mi Away
+                    </div>
+<div className="col-span-3 p-4 flex items-center justify-between">
+<div className="bg-white text-on-secondary-fixed px-3 py-1 font-meta-mono text-meta-mono brutalist-border">0 OFFERS</div>
+<span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+
+<div className="col-span-12 grid grid-cols-12 hover:bg-surface transition-colors cursor-pointer group">
+<div className="col-span-2 p-4 border-r-2 border-on-secondary-fixed font-meta-mono flex items-center group-hover:text-primary-container">#REQ-894</div>
+<div className="col-span-4 p-4 border-r-2 border-on-secondary-fixed font-button-text text-button-text uppercase truncate">Mid-Century Teak Credenza</div>
+<div className="col-span-3 p-4 border-r-2 border-on-secondary-fixed font-body-md flex items-center gap-2">
+<span className="material-symbols-outlined text-[18px]">location_on</span> 5.0mi Away
+                    </div>
+<div className="col-span-3 p-4 flex items-center justify-between">
+<div className="bg-primary-container text-white px-3 py-1 font-meta-mono text-meta-mono brutalist-border">12 OFFERS</div>
+<span className="material-symbols-outlined group-hover:translate-x-2 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer className="bg-white dark:bg-zinc-900 border-t-4 border-black dark:border-white w-full px-8 py-16 flex flex-col md:flex-row justify-between items-center gap-8 mt-auto z-10 relative">
+<div className="text-2xl font-black text-black dark:text-white font-['Space_Grotesk']">PingBazar</div>
+<div className="flex flex-wrap justify-center gap-6 font-mono uppercase text-sm font-bold">
+<a className="text-black dark:text-white hover:text-[#7D12FF] transition-colors transition-all duration-100" href="#">API Access</a>
+<a className="text-black dark:text-white hover:text-[#7D12FF] transition-colors transition-all duration-100" href="#">Market Data</a>
+<a className="text-black dark:text-white hover:text-[#7D12FF] transition-colors transition-all duration-100" href="#">Privacy Protocol</a>
+<a className="text-black dark:text-white hover:text-[#7D12FF] transition-colors transition-all duration-100" href="#">Terms of Trade</a>
+<a className="text-black dark:text-white hover:text-[#7D12FF] transition-colors transition-all duration-100" href="#">Support</a>
+</div>
+<div className="font-mono uppercase text-sm font-bold text-[#7D12FF]">
+            ©2024 PINGBAZAR. NO POLISH. JUST PROFIT.
+        </div>
+</footer>
+
+      </>
