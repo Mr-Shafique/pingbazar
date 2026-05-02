@@ -65,6 +65,24 @@
     --font-body-lg: var(--font-inter), sans-serif;
     --font-headline-lg: var(--font-space-grotesk), sans-serif;
     --font-body-md: var(--font-inter), sans-serif;
+
+    @keyframes notification-slide-in {
+        from {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    --animate-smooth-notification: notification-slide-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    @keyframes shrink-x {
+        from { transform: scaleX(1); }
+        to { transform: scaleX(0); }
+    }
+    --animate-progress-bar: shrink-x 5s linear forwards;
 }
 
 @layer utilities {

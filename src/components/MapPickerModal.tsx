@@ -133,7 +133,7 @@ export default function MapPickerModal({
       mapInstanceRef.current = map;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const marker = new (window.google.maps.marker as any).AdvancedMarkerElement({
+      const marker = new (window.google.maps as any).marker.AdvancedMarkerElement({
         position: { lat: latNum, lng: lngNum },
         map,
         gmpDraggable: true,
@@ -144,8 +144,7 @@ export default function MapPickerModal({
       // Click on map → move pin
       map.addListener(
         "click",
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (e: any) => {
+        (e: { latLng: { lat: () => number; lng: () => number } }) => {
           if (e.latLng) {
             placeMarker(e.latLng.lat(), e.latLng.lng());
           }
@@ -173,8 +172,7 @@ export default function MapPickerModal({
         const acElement = searchInputRef.current;
 
         // Listen for the select event from the web component
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        acElement.addEventListener("gmp-select", async (e: any) => {
+        acElement.addEventListener("gmp-select", async (e: { placePrediction: { toPlace: () => any } }) => {
           try {
             const placePrediction = e.placePrediction;
             if (!placePrediction) return;

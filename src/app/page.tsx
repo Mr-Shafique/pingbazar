@@ -55,20 +55,20 @@ export default function Home() {
       {/* Top Navbar */}
       <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center relative z-20">
         <Link href="/" className="flex items-center gap-2">
-          <span className="font-display-lg text-2xl sm:text-3xl lg:text-4xl italic tracking-tighter bg-primary-container text-white px-2 py-1 border-[2px] border-black">
+          <span className="font-display-lg text-2xl sm:text-3xl lg:text-4xl italic tracking-tighter bg-primary-container text-white px-2 py-1 border-2 border-black">
             PINGBAZAR
           </span>
         </Link>
         <div className="flex items-center gap-3">
           <Link
             href="/login"
-            className="hidden sm:block px-4 py-2 bg-white text-black font-button-text text-sm uppercase font-bold border-[2px] border-black neo-brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer"
+            className="hidden sm:block px-4 py-2 bg-white text-black font-button-text text-sm uppercase font-bold border-2 border-black neo-brutal-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all cursor-pointer"
           >
             Log In
           </Link>
           <Link
             href="/signup"
-            className="px-4 py-2 sm:px-5 sm:py-2.5 bg-tertiary-container text-on-tertiary-container font-button-text text-xs sm:text-sm uppercase font-bold border-[2px] border-black neo-brutal-shadow hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 sm:px-5 sm:py-2.5 bg-tertiary-container text-on-tertiary-container font-button-text text-xs sm:text-sm uppercase font-bold border-2 border-black neo-brutal-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center gap-2 cursor-pointer"
           >
             Sign Up
             <span className="material-symbols-outlined text-[16px] sm:text-[18px]">arrow_forward</span>
@@ -77,13 +77,13 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-grow flex flex-col justify-center items-center max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-20 py-10">
-        <div className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container border-[2px] border-black px-3 py-1 mb-6 sm:mb-8 font-meta-mono text-[10px] sm:text-xs font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+      <main className="grow flex flex-col justify-center items-center max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-20 py-10">
+        <div className="inline-flex items-center gap-2 bg-secondary-container text-on-secondary-container border-2 border-black px-3 py-1 mb-6 sm:mb-8 font-meta-mono text-[10px] sm:text-xs font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
           <span className="material-symbols-outlined text-[14px]">radar</span>
           <span>Reverse E-Commerce Redefined</span>
         </div>
 
-        <h1 className="font-display-xl text-[32px] sm:text-[44px] md:text-[56px] lg:text-[72px] leading-[1.1] text-black tracking-tight mb-6 max-w-4xl mx-auto break-words hyphens-auto">
+        <h1 className="font-display-xl text-[32px] sm:text-[44px] md:text-[56px] lg:text-[72px] leading-[1.1] text-black tracking-tight mb-6 max-w-4xl mx-auto wrap-break-word hyphens-auto">
           Find Products Through <br className="hidden sm:block" />
           <span className="inline-block bg-primary-container text-white px-3 py-1 mt-2 border-[3px] border-black transform -rotate-2">
             Local Sellers Near You
