@@ -172,7 +172,7 @@ export default function MapPickerModal({
         const acElement = searchInputRef.current;
 
         // Listen for the select event from the web component
-        acElement.addEventListener("gmp-select", async (e: { placePrediction: { toPlace: () => any } }) => {
+        acElement.addEventListener("gmp-select", async (e: { placePrediction: { toPlace: () => google.maps.places.Place } }) => {
           try {
             const placePrediction = e.placePrediction;
             if (!placePrediction) return;

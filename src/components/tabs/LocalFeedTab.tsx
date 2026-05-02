@@ -50,7 +50,7 @@ export default function LocalFeedTab({
             <span className="material-symbols-outlined text-4xl text-zinc-300">radar</span>
           </div>
           <h3 className="font-['Space_Grotesk'] text-xl font-black text-black uppercase mb-2">Zero Signals Detected</h3>
-          <p className="text-zinc-400 text-sm max-w-xs font-medium">Try increasing your detection perimeter or re-centering your node.</p>
+          <p className="text-zinc-400 text-sm  font-medium">Try increasing your detection perimeter or re-centering your node.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
