@@ -772,19 +772,19 @@ export default function AuthenticatedHome({
 
       {/* Responder Details Modal */}
       {respondingToRequest && (
-        <div className="fixed inset-0 z-[20000] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-20000 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setRespondingToRequest(null)}></div>
           <div 
             className="bg-white border-[6px] border-black p-6 sm:p-10 relative shadow-[16px_16px_0px_0px_black] z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar animate-in zoom-in-95 duration-200" 
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header - Protocol Style */}
-            <div className="w-full border-b-[4px] border-black pb-8 mb-8">
+            <div className="w-full border-b-4 border-black pb-8 mb-8">
               <div className="flex items-center gap-3 mb-6">
                 <span className="px-3 py-1 bg-black text-white text-[10px] font-mono font-black uppercase tracking-[0.2em] shadow-[4px_4px_0px_0px_#7D12FF]">
                   SEND_OFFER_V1
                 </span>
-                <div className="h-[2px] grow bg-zinc-100"></div>
+                <div className="h-0.5 grow bg-zinc-100"></div>
                 <button 
                   onClick={() => setRespondingToRequest(null)} 
                   className="w-10 h-10 border-2 border-black flex items-center justify-center hover:bg-red-500 hover:text-white transition-all cursor-pointer shadow-[2px_2px_0px_0px_black] active:shadow-none"
@@ -854,7 +854,7 @@ export default function AuthenticatedHome({
                 <button 
                   type="submit" 
                   disabled={submittingResponse || !shopName || !shopAddress} 
-                  className="w-full py-5 bg-black text-white border-[4px] border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[8px_8px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center gap-4 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
+                  className="w-full py-5 bg-black text-white border-4 border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[8px_8px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center gap-4 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
                 >
                   {submittingResponse ? "SENDING..." : (
                     <>
@@ -882,9 +882,9 @@ export default function AuthenticatedHome({
 
       {/* Custom Alert Modal */}
       {customAlert.show && (
-        <div className="fixed inset-0 z-[30000] flex items-center justify-center p-4 sm:p-6">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px]" onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}></div>
-          <div className="bg-white border-4 border-black p-6 sm:p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-[min(440px,95%)] min-w-[300px] flex flex-col animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-30000 flex items-center justify-center p-4 sm:p-6">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-xs" onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}></div>
+          <div className="bg-white border-4 border-black p-6 sm:p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-[min(440px,95%)] min-w-75 flex flex-col animate-in zoom-in-95 duration-200">
             <div className="flex items-center gap-4 mb-6 border-b-2 border-black pb-4 shrink-0">
               <div className={`w-12 h-12 flex items-center justify-center border-2 border-black shadow-[3px_3px_0px_0px_black] shrink-0 ${
                 customAlert.type === "success" ? "bg-[#00C853] text-white" : 
@@ -906,7 +906,7 @@ export default function AuthenticatedHome({
             </div>
             
             <div className="max-h-[50vh] overflow-y-auto no-scrollbar mb-8">
-              <p className="font-['Space_Grotesk'] font-bold text-lg text-black leading-tight break-words">
+              <p className="font-['Space_Grotesk'] font-bold text-lg text-black leading-tight wrap-break-word">
                 {customAlert.message}
               </p>
             </div>

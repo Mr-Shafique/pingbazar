@@ -83,9 +83,19 @@
         to { transform: scaleX(0); }
     }
     --animate-progress-bar: shrink-x 5s linear forwards;
+
+    @keyframes spin-fast {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    --animate-spin-fast: spin-fast 0.6s linear infinite;
 }
 
 @layer utilities {
+    .animate-spin-fast {
+        animation: var(--animate-spin-fast);
+    }
+
     .neo-brutal-shadow {
         box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
     }

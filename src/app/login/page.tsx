@@ -240,7 +240,7 @@ function AuthPageContent() {
               <span>{loading ? "PROCESSING..." : isSignUp ? "Create Account" : "Access System"}</span>
               {!loading && <span className="font-bold text-lg">&gt;</span>}
               {loading && (
-                <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24">
+                <svg className="animate-spin-fast h-4 w-4 text-white" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                 </svg>
@@ -298,7 +298,7 @@ export default function AuthPage() {
     <Suspense fallback={
       <div className="min-h-screen flex items-center justify-center bg-slate-950 font-sans text-white">
         <div className="flex flex-col items-center gap-4">
-          <svg className="animate-spin h-10 w-10 text-blue-400" viewBox="0 0 24 24">
+          <svg className="animate-spin-fast h-10 w-10 text-blue-400" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
           </svg>

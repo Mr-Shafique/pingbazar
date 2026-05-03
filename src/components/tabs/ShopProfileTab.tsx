@@ -24,12 +24,12 @@ export default function ShopProfileTab({
   return (
     <div className="w-full animate-in fade-in slide-in-from-bottom-2 duration-300">
       {/* Refined Wide Header */}
-      <div className="w-full border-b-[4px] border-black pb-10 mb-12">
+      <div className="w-full border-b-4 border-black pb-10 mb-12">
         <div className="flex items-center gap-3 mb-6">
           <span className="px-3 py-1 bg-black text-white text-[10px] font-mono font-black uppercase tracking-[0.2em] shadow-[4px_4px_0px_0px_#7D12FF]">
             SELLER_PROFILE_V1
           </span>
-          <div className="h-[2px] grow bg-zinc-100"></div>
+          <div className="h-0.5 grow bg-zinc-100"></div>
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 lg:gap-20">

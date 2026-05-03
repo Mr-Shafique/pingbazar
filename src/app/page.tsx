@@ -31,11 +31,10 @@ export default function Home() {
     return (
       <div className="bg-background text-on-background font-body-lg min-h-screen flex items-center justify-center p-4">
         <div className="flex flex-col items-center gap-4 bg-white p-6 border-[3px] border-black neo-brutal-shadow-lg">
-          <svg className="animate-spin h-10 w-10 text-primary-container" viewBox="0 0 24 24">
+          <svg className="animate-spin-fast h-10 w-10 text-primary-container" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg>
-          <p className="font-meta-mono text-sm uppercase font-bold">Connecting to PingBazar...</p>
+          </svg>          <p className="font-meta-mono text-sm uppercase font-bold">Connecting to PingBazar...</p>
         </div>
       </div>
     );

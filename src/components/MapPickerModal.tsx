@@ -370,7 +370,7 @@ export default function MapPickerModal({
           >
             <span
               className="material-symbols-outlined text-[17px]"
-              style={{ animation: gpsLoading ? "spin 1s linear infinite" : "none" }}
+              style={{ animation: gpsLoading ? "spin 0.6s linear infinite" : "none" }}
             >
               {gpsLoading ? "sync" : "my_location"}
             </span>
@@ -510,7 +510,7 @@ export default function MapPickerModal({
           to { transform: rotate(360deg); }
         }
         .animate-spin {
-          animation: spin 1s linear infinite;
+          animation: spin 0.6s linear infinite;
         }
         gmp-place-autocomplete::part(input) {
           padding-left: 36px !important;
