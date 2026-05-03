@@ -420,7 +420,7 @@ export default function MapPickerModal({
               <span className="material-symbols-outlined text-[14px] animate-spin">
                 sync
               </span>
-              Resolving address…
+              Finding address…
             </div>
           )}
 

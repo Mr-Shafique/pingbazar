@@ -35,10 +35,10 @@ export default function PostNeedTab({
           <div className="h-0.5 w-8 bg-black"></div>
         </div>
         <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
-          Broadcast <span className="text-[#FF4545]">Need</span>
+          Post a <span className="text-[#FF4545]">Request</span>
         </h2>
         <p className="text-zinc-500 font-medium mt-2 ">
-          Distribute your product requirements to all verified nodes in the local grid.
+          Tell local shops what you need and get offers back.
         </p>
       </div>
 
@@ -48,12 +48,12 @@ export default function PostNeedTab({
           <div className="p-8 bg-white border-4 border-black shadow-[8px_8px_0px_0px_black] space-y-6">
             <div className="space-y-2">
               <label className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-widest text-zinc-400 ml-1">
-                Requirement Headline
+                What do you need?
               </label>
               <input
                 type="text"
                 required
-                placeholder="E.G. VINTAGE TURNTABLE, DESK LAMP..."
+                placeholder="E.G. VINTAGE WATCH, STUDY LAMP..."
                 value={requestTitle}
                 onChange={(e) => setRequestTitle(e.target.value)}
                 className="w-full bg-zinc-50 border-2 border-black p-5 font-['Space_Grotesk'] font-bold text-xl text-black focus:outline-none focus:bg-white focus:shadow-[4px_4px_0px_0px_#FF4545] transition-all placeholder:opacity-20"
@@ -62,11 +62,11 @@ export default function PostNeedTab({
 
             <div className="space-y-2">
               <label className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-widest text-zinc-400 ml-1">
-                Data Specifications
+                Product Details
               </label>
               <textarea
                 required
-                placeholder="LIST CONDITION, MODEL, COLOR, OR BUDGETARY CONSTRAINTS..."
+                placeholder="DESCRIBE COLOR, CONDITION, OR ANY OTHER DETAILS..."
                 value={requestDesc}
                 onChange={(e) => setRequestDesc(e.target.value)}
                 rows={6}
@@ -93,11 +93,11 @@ export default function PostNeedTab({
                   // eslint-disable-next-line @next/next/no-img-element, @next/next/no-img-element, @next/next/no-img-element
                   <img
                     src={base64Image}
-                    alt="Payload Evidence"
+                    alt="Product Image"
                     className="w-full h-full object-contain drop-shadow-[4px_4px_0px_rgba(0,0,0,0.5)]"
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                    <span className="bg-white border-2 border-black px-4 py-2 font-black uppercase text-[10px] shadow-[4px_4px_0px_0px_black]">Replace Image</span>
+                    <span className="bg-white border-2 border-black px-4 py-2 font-black uppercase text-[10px] shadow-[4px_4px_0px_0px_black]">Replace Photo</span>
                   </div>
                 </div>
               ) : (
@@ -106,8 +106,8 @@ export default function PostNeedTab({
                     <span className="material-symbols-outlined text-zinc-300 text-[32px]">photo_camera</span>
                   </div>
                   <div>
-                    <p className="font-['Space_Grotesk'] text-lg font-black text-black uppercase tracking-tighter">Capture Visual</p>
-                    <p className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest mt-1">Upload reference data</p>
+                    <p className="font-['Space_Grotesk'] text-lg font-black text-black uppercase tracking-tighter">Add a Photo</p>
+                    <p className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest mt-1">Upload an image for reference</p>
                   </div>
                 </div>
               )}
@@ -119,10 +119,10 @@ export default function PostNeedTab({
             disabled={submitting}
             className="w-full py-6 bg-[#FF4545] text-white border-4 border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_black] transition-all active:translate-x-0 active:translate-y-0 active:shadow-none cursor-pointer disabled:opacity-50 flex items-center justify-center gap-4"
           >
-            {submitting ? "Processing..." : (
+            {submitting ? "Posting..." : (
               <>
-                Initialize Broadcast
-                <span className="material-symbols-outlined text-[24px]">sensors</span>
+                Post My Request
+                <span className="material-symbols-outlined text-[24px]">send</span>
               </>
             )}
           </button>

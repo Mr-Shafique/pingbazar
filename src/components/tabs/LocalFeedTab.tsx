@@ -26,22 +26,17 @@ export default function LocalFeedTab({
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="px-2 py-0.5 bg-black text-white text-[10px] font-mono font-black uppercase tracking-widest">
-              LIVE_DATA
+              LIVE_FEED
             </span>
             <div className="h-0.5 w-8 bg-black"></div>
           </div>
           <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
-            Market <span className="text-[#00C853]">Stream</span>
+            Nearby <span className="text-[#00C853]">Requests</span>
           </h2>
           <p className="text-zinc-500 font-medium mt-2 ">
-            Decrypted local demands intercepted within your operational perimeter.
+            See what people in your area are looking for right now.
           </p>
         </div>
-        
-        {/* <div className="flex items-center gap-3 px-6 py-4 bg-white border-4 border-black shadow-[4px_4px_0px_0px_black] font-mono text-xs font-black uppercase tracking-widest">
-          <div className="w-2.5 h-2.5 bg-[#00C853] rounded-full animate-pulse"></div>
-          Scanning_Network...
-        </div> */}
       </div>
 
       {feedRequests.length === 0 ? (
@@ -49,8 +44,8 @@ export default function LocalFeedTab({
           <div className="w-20 h-20 bg-zinc-50 border-2 border-black flex items-center justify-center rotate-3 mb-6">
             <span className="material-symbols-outlined text-4xl text-zinc-300">radar</span>
           </div>
-          <h3 className="font-['Space_Grotesk'] text-xl font-black text-black uppercase mb-2">Zero Signals Detected</h3>
-          <p className="text-zinc-400 text-sm  font-medium">Try increasing your detection perimeter or re-centering your node.</p>
+          <h3 className="font-['Space_Grotesk'] text-xl font-black text-black uppercase mb-2">No Requests Found</h3>
+          <p className="text-zinc-400 text-sm  font-medium">Try increasing your search distance or check back later.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -78,7 +73,7 @@ export default function LocalFeedTab({
                   )}
                   <div className="absolute top-4 left-4 bg-black text-white px-3 py-1.5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-[4px_4px_0px_0px_#00C853]">
                     <span className="material-symbols-outlined text-[14px]">distance</span>
-                    {distance.toFixed(1)} KM
+                    {distance.toFixed(1)} KM AWAY
                   </div>
                 </div>
 
@@ -89,7 +84,7 @@ export default function LocalFeedTab({
                       {req.title}
                     </h3>
                     <div className="flex items-center gap-2 mt-2">
-                       <span className="font-mono text-[9px] font-black text-zinc-400 uppercase tracking-tighter">ZONE: {req.city}</span>
+                       <span className="font-mono text-[9px] font-black text-zinc-400 uppercase tracking-tighter">CITY: {req.city}</span>
                     </div>
                   </div>
                   
@@ -102,13 +97,13 @@ export default function LocalFeedTab({
                       onClick={() => onAccept(req)}
                       className="grow py-4 bg-black text-white border-2 border-black font-['Space_Grotesk'] font-black uppercase text-[11px] tracking-widest hover:bg-[#7D12FF] transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
-                      Process Fulfillment
-                      <span className="material-symbols-outlined text-[18px]">verified</span>
+                      I have this item
+                      <span className="material-symbols-outlined text-[18px]">check_circle</span>
                     </button>
                     <button
                       onClick={() => onIgnore(req.id)}
                       className="w-14 h-14 bg-white text-black border-2 border-black font-black hover:bg-red-500 hover:text-white transition-all cursor-pointer flex items-center justify-center"
-                      title="Discard Signal"
+                      title="Ignore"
                     >
                       <span className="material-symbols-outlined text-[24px]">close</span>
                     </button>

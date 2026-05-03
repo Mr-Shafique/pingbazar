@@ -106,7 +106,7 @@ export default function Home() {
       </main>
 
       <footer className="w-full max-w-7xl mx-auto px-4 py-6 sm:py-8 text-center font-meta-mono text-[10px] sm:text-[12px] text-secondary relative z-20 border-t-[3px] border-black bg-white">
-        &copy; {new Date().getFullYear()} PINGBAZAR PROTOCOL. ALL RIGHTS RESERVED.
+        &copy; {new Date().getFullYear()} PINGBAZAR. ALL RIGHTS RESERVED.
       </footer>
     </div>
   );

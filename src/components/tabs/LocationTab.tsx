@@ -30,10 +30,10 @@ export default function LocationTab({
             <div className="h-0.5 w-8 bg-black"></div>
           </div>
           <h2 className="font-['Space_Grotesk'] text-4xl sm:text-5xl font-black uppercase tracking-tighter text-black">
-            Establish <span className="text-[#7D12FF]">Zone</span>
+            Set Your <span className="text-[#7D12FF]">Location</span>
           </h2>
           <p className="text-zinc-500 font-medium mt-2">
-            Define your operational perimeter to filter local demand signals.
+            Choose where you want to find or sell products.
           </p>
         </div>
       </div>
@@ -48,7 +48,7 @@ export default function LocationTab({
               </div>
               <div>
                 <p className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-widest text-zinc-400">
-                  Current Anchor Point
+                  Your Current City
                 </p>
                 <h3 className="font-['Space_Grotesk'] text-2xl font-black text-black  max-w-75">
                   {city || "Locating..."}
@@ -72,7 +72,7 @@ export default function LocationTab({
               className="w-full py-4 bg-white border-2 border-black font-black uppercase text-sm tracking-tighter flex items-center justify-center gap-3 hover:bg-black hover:text-white transition-all cursor-pointer shadow-[4px_4px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1"
             >
               <span className="material-symbols-outlined text-[20px]">map</span>
-              Open Deployment Map
+              Choose Location on Map
             </button>
           </div>
         </div>
@@ -83,16 +83,16 @@ export default function LocationTab({
             <div className="flex items-center gap-3 mb-8">
               <span className="material-symbols-outlined text-[#7D12FF] font-black">radar</span>
               <label className="font-['Space_Grotesk'] font-black uppercase text-lg tracking-tight">
-                Detection Perimeter
+                Search Distance
               </label>
             </div>
 
             <div className="flex flex-col gap-3">
               {[
-                { value: "1", label: "1 KM", desc: "Hyper Local" },
-                { value: "5", label: "5 KM", desc: "Neighborhood" },
-                { value: "10", label: "10 KM", desc: "City Wide" },
-                { value: "25", label: "25 KM", desc: "Metropolitan" },
+                { value: "1", label: "1 KM", desc: "Very Close" },
+                { value: "5", label: "5 KM", desc: "My Area" },
+                { value: "10", label: "10 KM", desc: "My City" },
+                { value: "25", label: "25 KM", desc: "Nearby Cities" },
               ].map((opt) => (
                 <button
                   key={opt.value}
@@ -120,7 +120,7 @@ export default function LocationTab({
           className="group relative px-12 py-5 bg-black text-white border-4 border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[8px_8px_0px_0px_rgba(125,18,255,0.3)] active:shadow-none active:translate-x-1 active:translate-y-1"
         >
           <span className="relative z-10 flex items-center gap-3 text-xl">
-            Save Criteria
+            Save Settings
             <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
           </span>
         </button>

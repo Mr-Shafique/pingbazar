@@ -406,7 +406,7 @@ export default function AuthenticatedHome({
 
     triggerAlert(
       "Search criteria updated! Nearby requests will now refresh in your feed.",
-      "Sync Complete",
+      "Settings Saved",
       "success",
     );
     setActiveTab("feed");
@@ -473,13 +473,13 @@ export default function AuthenticatedHome({
       setBase64Image("");
       triggerAlert(
         "Your product request was posted successfully!",
-        "Broadcast Active",
+        "Request Posted",
         "success",
       );
       setActiveTab("my-needs");
     } catch (err) {
       console.error(err);
-      triggerAlert("Error posting request: " + err, "Transmission Failed", "error");
+      triggerAlert("Error posting request: " + err, "Post Failed", "error");
     } finally {
       setSubmitting(false);
     }
@@ -493,7 +493,7 @@ export default function AuthenticatedHome({
     localStorage.setItem("pingbazar_shop_name", shopName);
     localStorage.setItem("pingbazar_shop_phone", shopPhone);
     localStorage.setItem("pingbazar_shop_address", shopAddress);
-    triggerAlert("Seller details updated successfully!", "Profile Synced", "success");
+    triggerAlert("Seller details updated successfully!", "Profile Saved", "success");
   };
 
   const handleConfirmResponse = async (e: React.FormEvent) => {
@@ -515,7 +515,7 @@ export default function AuthenticatedHome({
     if (alreadyResponded) {
       triggerAlert(
         "You have already responded to this request.",
-        "Duplicate Signal",
+        "Already Sent",
         "info",
       );
       setRespondingToRequest(null);
@@ -543,12 +543,12 @@ export default function AuthenticatedHome({
       setRespondingToRequest(null);
       triggerAlert(
         "Offer sent! The buyer can now view your shop and contact details.",
-        "Sync Success",
+        "Offer Sent",
         "success",
       );
     } catch (err) {
       console.error(err);
-      triggerAlert("Error responding to request: " + err, "Sync Failed", "error");
+      triggerAlert("Error responding to request: " + err, "Error Sending", "error");
     } finally {
       setSubmittingResponse(false);
     }
@@ -581,7 +581,7 @@ export default function AuthenticatedHome({
               <div className="flex items-center gap-2">
                 <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse shrink-0"></div>
                 <span className="font-['Space_Grotesk'] text-[11px] text-white font-black uppercase tracking-[0.2em] whitespace-nowrap">
-                  Ping Alert
+                  Request Alert
                 </span>
               </div>
               <button
@@ -603,7 +603,7 @@ export default function AuthenticatedHome({
                   {notification.title}
                 </h4>
                 <p className="font-mono text-[11px] text-white/90 font-bold uppercase tracking-tight truncate mt-0.5">
-                  <span className="opacity-60 mr-1">ZONE:</span> {notification.city}
+                  <span className="opacity-60 mr-1">CITY:</span> {notification.city}
                 </p>
               </div>
             </div>
@@ -615,7 +615,7 @@ export default function AuthenticatedHome({
               }}
               className="w-full py-3 bg-white text-black font-['Space_Grotesk'] text-xs uppercase font-black border-2 border-black hover:bg-zinc-100 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[4px_4px_0px_0px_black] active:shadow-none"
             >
-              Inspect Request
+              View Request
               <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
             </button>
           </div>
@@ -634,11 +634,11 @@ export default function AuthenticatedHome({
           
           <div className="hidden lg:flex items-center gap-1 font-['Space_Grotesk'] font-black uppercase">
             {[
-              { id: "location", label: "Zone", icon: "location_on" },
-              { id: "request", label: "Broadcast", icon: "sensors" },
-              { id: "feed", label: "Stream", icon: "dynamic_feed" },
-              { id: "my-needs", label: "Inventory", icon: "inventory_2" },
-              { id: "seller-profile", label: "Shop", icon: "store" },
+              { id: "location", label: "Location", icon: "location_on" },
+              { id: "request", label: "Post", icon: "add_circle" },
+              { id: "feed", label: "Nearby", icon: "explore" },
+              { id: "my-needs", label: "Requests", icon: "shopping_bag" },
+              { id: "seller-profile", label: "Profile", icon: "account_circle" },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -659,10 +659,10 @@ export default function AuthenticatedHome({
         <div className="flex items-center gap-3 sm:gap-6">
           <div className="hidden sm:flex flex-col text-right">
             <span className="font-['Space_Grotesk'] font-black text-sm uppercase leading-none">
-              {user.displayName || "Node"}
+              {user.displayName || "User"}
             </span>
             <span className="font-mono text-[9px] text-zinc-400 font-bold">
-              AUTHORIZED_NODE
+              LOGGED IN
             </span>
           </div>
           <button
@@ -678,11 +678,11 @@ export default function AuthenticatedHome({
       {/* Mobile Navigation */}
       <div className="lg:hidden w-full bg-white border-b-2 border-black z-40 overflow-x-auto no-scrollbar flex sticky top-18 sm:top-22">
         {[
-          { id: "location", label: "Zone", icon: "location_on" },
-          { id: "request", label: "Broad", icon: "sensors" },
-          { id: "feed", label: "Stream", icon: "dynamic_feed" },
-          { id: "my-needs", label: "Inv", icon: "inventory_2" },
-          { id: "seller-profile", label: "Shop", icon: "store" },
+          { id: "location", label: "Location", icon: "location_on" },
+          { id: "request", label: "Post", icon: "add_circle" },
+          { id: "feed", label: "Nearby", icon: "explore" },
+          { id: "my-needs", label: "Requests", icon: "shopping_bag" },
+          { id: "seller-profile", label: "Profile", icon: "account_circle" },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -763,7 +763,7 @@ export default function AuthenticatedHome({
       <footer className="bg-white border-t-4 border-black w-full px-8 py-12 flex flex-col md:flex-row justify-between items-center gap-8 mt-auto z-10 relative">
         <div className="text-2xl font-black text-black font-['Space_Grotesk'] italic tracking-widest">PingBazar</div>
         <div className="flex flex-wrap justify-center gap-6 font-mono uppercase text-[10px] font-bold text-zinc-400">
-          <span>&copy; {new Date().getFullYear()} PINGBAZAR. OPEN PROTOCOL.</span>
+          <span>&copy; {new Date().getFullYear()} PINGBAZAR. OPEN ACCESS.</span>
         </div>
         <div className="flex gap-4 font-mono uppercase text-[10px] font-black text-[#7D12FF]">
           <span>VER_1.0.8</span>
@@ -782,7 +782,7 @@ export default function AuthenticatedHome({
             <div className="w-full border-b-[4px] border-black pb-8 mb-8">
               <div className="flex items-center gap-3 mb-6">
                 <span className="px-3 py-1 bg-black text-white text-[10px] font-mono font-black uppercase tracking-[0.2em] shadow-[4px_4px_0px_0px_#7D12FF]">
-                  TRADE_PROTOCOL_INIT
+                  SEND_OFFER_V1
                 </span>
                 <div className="h-[2px] grow bg-zinc-100"></div>
                 <button 
@@ -795,7 +795,7 @@ export default function AuthenticatedHome({
               
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <h3 className="font-['Space_Grotesk'] text-4xl font-black text-black uppercase tracking-tighter shrink-0">
-                  Fulfillment <span className="text-[#7D12FF]">Signal</span>
+                  I Have This <span className="text-[#7D12FF]">Item</span>
                 </h3>
                 <p className="text-zinc-500 font-bold text-xs uppercase tracking-widest bg-zinc-50 border-2 border-black px-3 py-1.5 shadow-[2px_2px_0px_0px_black]">
                   REQ_ID: {respondingToRequest.id.slice(0,8)}
@@ -804,8 +804,7 @@ export default function AuthenticatedHome({
             </div>
 
             <p className="text-zinc-500 font-medium mb-10 leading-relaxed ">
-              Synchronize your merchant node credentials to the local grid. This will initiate a direct 
-              communication link with the requesting buyer.
+              Send your shop details to the buyer. This will let them contact you directly to discuss the item.
             </p>
 
             <form onSubmit={handleConfirmResponse} className="flex flex-col gap-8">
@@ -814,10 +813,10 @@ export default function AuthenticatedHome({
                 <div className="md:col-span-2 p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="material-symbols-outlined text-sm text-[#7D12FF]">store</span>
-                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Merchant Identifier</label>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Shop Name</label>
                   </div>
                   <p className="font-['Space_Grotesk'] font-black text-xl text-black uppercase truncate">
-                    {shopName || "UNDEFINED_NODE"}
+                    {shopName || "SHOP_NOT_SET"}
                   </p>
                 </div>
 
@@ -825,7 +824,7 @@ export default function AuthenticatedHome({
                 <div className="p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="material-symbols-outlined text-sm text-[#7D12FF]">call</span>
-                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Secure Comms Link</label>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Phone Number</label>
                   </div>
                   <p className="font-mono font-black text-lg text-black">
                     {shopPhone || "000-000-0000"}
@@ -836,10 +835,10 @@ export default function AuthenticatedHome({
                 <div className="p-5 bg-zinc-50 border-2 border-black shadow-[4px_4px_0px_0px_black] flex flex-col gap-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="material-symbols-outlined text-sm text-[#7D12FF]">pin_drop</span>
-                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Extraction Point</label>
+                    <label className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-widest text-zinc-400">Shop Location</label>
                   </div>
                   <p className="font-['Space_Grotesk'] font-bold text-sm text-black truncate">
-                    {shopAddress || "UNDEFINED_LOCATION"}
+                    {shopAddress || "LOCATION_NOT_SET"}
                   </p>
                 </div>
               </div>
@@ -848,7 +847,7 @@ export default function AuthenticatedHome({
                 <div className="p-4 bg-[#7D12FF]/5 border-l-4 border-[#7D12FF] flex items-start gap-3">
                   <span className="material-symbols-outlined text-[#7D12FF] text-[20px]">info</span>
                   <p className="text-[11px] text-[#7D12FF] font-bold uppercase leading-tight tracking-wide">
-                    Verification Complete: The credentials above will be broadcasted to the buyer node to initialize the secure trade link.
+                    The details above will be sent to the buyer so they can call or visit your shop.
                   </p>
                 </div>
 
@@ -857,10 +856,10 @@ export default function AuthenticatedHome({
                   disabled={submittingResponse || !shopName || !shopAddress} 
                   className="w-full py-5 bg-black text-white border-[4px] border-black font-['Space_Grotesk'] font-black uppercase tracking-tighter text-xl hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[8px_8px_0px_0px_black] active:shadow-none active:translate-x-1 active:translate-y-1 flex items-center justify-center gap-4 disabled:bg-zinc-200 disabled:text-zinc-400 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-x-0 disabled:translate-y-0"
                 >
-                  {submittingResponse ? "TRANSMITTING..." : (
+                  {submittingResponse ? "SENDING..." : (
                     <>
-                      Initialize Trade Sync
-                      <span className="material-symbols-outlined text-[24px]">sensors</span>
+                      Send My Details
+                      <span className="material-symbols-outlined text-[24px]">send</span>
                     </>
                   )}
                 </button>
@@ -871,7 +870,7 @@ export default function AuthenticatedHome({
                   className="w-full py-3 border-2 border-black font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-[0.2em] hover:bg-zinc-50 transition-all flex items-center justify-center gap-2"
                 >
                   <span className="material-symbols-outlined text-[16px]">edit_note</span>
-                  Modify merchant Profile
+                  Edit Shop Profile
                 </button>
               </div>
             </form>
@@ -883,28 +882,41 @@ export default function AuthenticatedHome({
 
       {/* Custom Alert Modal */}
       {customAlert.show && (
-        <div className="fixed inset-0 z-[30000] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}></div>
-          <div className="bg-white border-4 border-black p-6 sm:p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-full max-w-md animate-in zoom-in-95 duration-200">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`w-3 h-3 rounded-full ${
-                customAlert.type === "success" ? "bg-green-500" : 
-                customAlert.type === "error" ? "bg-red-500" : "bg-[#7D12FF]"
-              }`}></div>
-              <h4 className="font-['Space_Grotesk'] font-black uppercase text-xs tracking-[0.2em] text-zinc-400">
-                {customAlert.title}
-              </h4>
+        <div className="fixed inset-0 z-[30000] flex items-center justify-center p-4 sm:p-6">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[4px]" onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}></div>
+          <div className="bg-white border-4 border-black p-6 sm:p-8 relative shadow-[12px_12px_0px_0px_black] z-10 w-[min(440px,95%)] min-w-[300px] flex flex-col animate-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-4 mb-6 border-b-2 border-black pb-4 shrink-0">
+              <div className={`w-12 h-12 flex items-center justify-center border-2 border-black shadow-[3px_3px_0px_0px_black] shrink-0 ${
+                customAlert.type === "success" ? "bg-[#00C853] text-white" : 
+                customAlert.type === "error" ? "bg-[#FF4545] text-white" : "bg-[#7D12FF] text-white"
+              }`}>
+                <span className="material-symbols-outlined text-2xl font-black">
+                  {customAlert.type === "success" ? "check_circle" : 
+                   customAlert.type === "error" ? "error" : "info"}
+                </span>
+              </div>
+              <div className="min-w-0 flex-1 overflow-hidden">
+                <h4 className="font-['Space_Grotesk'] font-black uppercase text-[10px] tracking-[0.2em] text-zinc-400 leading-none mb-1">
+                  System Notification
+                </h4>
+                <p className="font-['Space_Grotesk'] font-black text-xl text-black truncate uppercase tracking-tighter">
+                  {customAlert.title}
+                </p>
+              </div>
             </div>
             
-            <p className="font-['Space_Grotesk'] font-bold text-lg text-black mb-8 leading-tight">
-              {customAlert.message}
-            </p>
+            <div className="max-h-[50vh] overflow-y-auto no-scrollbar mb-8">
+              <p className="font-['Space_Grotesk'] font-bold text-lg text-black leading-tight break-words">
+                {customAlert.message}
+              </p>
+            </div>
 
             <button 
               onClick={() => setCustomAlert(prev => ({ ...prev, show: false }))}
-              className="w-full py-4 bg-black text-white border-2 border-black font-['Space_Grotesk'] font-black uppercase tracking-widest text-xs hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[4px_4px_0px_0px_black] active:shadow-none active:translate-x-0.5 active:translate-y-0.5"
+              className="w-full py-4 bg-black text-white border-2 border-black font-['Space_Grotesk'] font-black uppercase tracking-widest text-[10px] hover:bg-[#7D12FF] transition-all cursor-pointer shadow-[4px_4px_0px_0px_black] active:shadow-none active:translate-x-0.5 active:translate-y-0.5 mt-auto flex items-center justify-center gap-2 shrink-0"
             >
-              Acknowledge
+              Close Notification
+              <span className="material-symbols-outlined text-lg">close</span>
             </button>
           </div>
         </div>
