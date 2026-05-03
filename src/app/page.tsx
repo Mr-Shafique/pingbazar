@@ -3,16 +3,24 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { auth } from "@/lib/firebase";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { onAuthStateChanged, signOut, sendEmailVerification, User } from "firebase/auth";
 import AuthenticatedHome from "@/components/AuthenticatedHome";
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [resending, setResending] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        // Force reload user to get latest emailVerified status
+        await currentUser.reload();
+        setUser(auth.currentUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -27,6 +35,25 @@ export default function Home() {
     }
   };
 
+  const handleResendEmail = async () => {
+    if (!user) return;
+    setResending(true);
+    setMessage("");
+    try {
+      const actionCodeSettings = {
+        url: "https://pingbazar-331301713284.us-central1.run.app/login",
+        handleCodeInApp: true,
+      };
+      await sendEmailVerification(user, actionCodeSettings);
+      setMessage("Verification email sent! Please check your inbox or spam folder.");
+    } catch (error) {
+      console.error("Error resending email:", error);
+      setMessage("Failed to send email. Please try again later.");
+    } finally {
+      setResending(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="bg-background text-on-background font-body-lg min-h-screen flex items-center justify-center p-4">
@@ -34,7 +61,8 @@ export default function Home() {
           <svg className="animate-spin-fast h-10 w-10 text-primary-container" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg>          <p className="font-meta-mono text-sm uppercase font-bold">Connecting to PingBazar...</p>
+          </svg>
+          <p className="font-meta-mono text-sm uppercase font-bold">Connecting to PingBazar...</p>
         </div>
       </div>
     );
@@ -42,6 +70,59 @@ export default function Home() {
 
   // If Authenticated View
   if (user) {
+    if (!user.emailVerified) {
+      return (
+        <div className="bg-background text-on-background font-body-lg min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+          {/* Decorative Grid Background */}
+          <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdHRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlNWUyZTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-60 z-0 pointer-events-none"></div>
+
+          <div className="w-full max-w-md bg-white border-[4px] border-black p-8 neo-brutal-shadow-lg z-10 flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+              <span className="w-12 h-12 bg-primary-container text-white border-2 border-black flex items-center justify-center neo-brutal-shadow-sm">
+                <span className="material-symbols-outlined">mark_email_unread</span>
+              </span>
+              <h2 className="font-display-lg text-2xl uppercase tracking-tighter italic">Verify Your Email</h2>
+            </div>
+
+            <p className="font-body-md text-secondary leading-relaxed">
+              We've sent a verification link to <span className="font-bold text-black">{user.email}</span>. Please confirm your email to access the PingBazar protocol.
+            </p>
+
+            {message && (
+              <div className={`p-3 border-2 border-black text-xs font-meta-mono font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${message.includes('sent') ? 'bg-green-100 text-green-800' : 'bg-error-container text-on-error-container'}`}>
+                {message}
+              </div>
+            )}
+
+            <div className="flex flex-col gap-3">
+              <button
+                onClick={handleResendEmail}
+                disabled={resending}
+                className="w-full py-4 bg-primary-container text-white font-button-text text-sm uppercase font-bold border-2 border-black neo-brutal-shadow hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                {resending ? "Sending..." : "Resend Verification Email"}
+                {!resending && <span className="material-symbols-outlined text-[18px]">send</span>}
+              </button>
+
+              <button
+                onClick={() => window.location.reload()}
+                className="w-full py-3 bg-white text-black font-button-text text-xs uppercase font-bold border-2 border-black hover:bg-zinc-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                I've Verified My Email
+                <span className="material-symbols-outlined text-[16px]">refresh</span>
+              </button>
+
+              <button
+                onClick={handleSignOut}
+                className="w-full py-3 text-red-600 font-button-text text-xs uppercase font-bold border-b-2 border-transparent hover:border-red-600 transition-all cursor-pointer"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
     return <AuthenticatedHome user={user} onSignOut={handleSignOut} />;
   }
 

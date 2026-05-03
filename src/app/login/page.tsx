@@ -9,7 +9,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  updateProfile
+  updateProfile,
+  sendEmailVerification,
+  signOut,
+  sendPasswordResetEmail
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -19,15 +22,18 @@ function AuthPageContent() {
   const modeParam = searchParams ? searchParams.get("mode") : null;
 
   const [isSignUp, setIsSignUp] = useState(() => modeParam === "signup");
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError("");
+    setSuccessMessage("");
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
@@ -61,9 +67,38 @@ function AuthPageContent() {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      setError("Please enter your email address to reset your password.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccessMessage("");
+
+    try {
+      const actionCodeSettings = {
+        url: "https://pingbazar-331301713284.us-central1.run.app/login",
+        handleCodeInApp: true,
+      };
+      await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      setSuccessMessage("Password reset link sent! Please check your inbox or spam folder.");
+      setShowForgotPassword(false);
+    } catch (err: unknown) {
+      console.error("Reset error:", err);
+      const firebaseError = err as { message?: string };
+      setError(firebaseError.message?.replace("Firebase: ", "").replace(/\(auth\/.*\)\.?/, "").trim() || "Failed to send reset email.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage("");
 
     // Check form fields before submitting
     if (!email || !password) {
@@ -88,16 +123,49 @@ function AuthPageContent() {
         const result = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(result.user, { displayName: fullName });
 
+        // Action settings for the verification link
+        const actionCodeSettings = {
+          url: "https://pingbazar-331301713284.us-central1.run.app/login",
+          handleCodeInApp: true,
+        };
+
+        try {
+          // Send verification email
+          await sendEmailVerification(result.user, actionCodeSettings);
+        } catch (emailErr) {
+          console.error("Verification email failed to send:", emailErr);
+          // If email fails, we still create the user but inform them
+          setError("Account created, but we couldn't send the verification email. Please try logging in to resend it.");
+          setLoading(false);
+          return;
+        }
+
         await setDoc(doc(db, "users", result.user.uid), {
           uid: result.user.uid,
           email: result.user.email,
           displayName: fullName,
           createdAt: new Date().toISOString(),
         });
+
+        // Log them out immediately after signup until they verify
+        await signOut(auth);
+        
+        setSuccessMessage("Account created! Please check your email to verify your account before logging in.");
+        setIsSignUp(false); // Switch to login mode
+        setEmail("");
+        setPassword("");
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        
+        if (!result.user.emailVerified) {
+          await signOut(auth);
+          setError("Please verify your email address before logging in. We've sent a verification link to your inbox.");
+          setLoading(false);
+          return;
+        }
+        
+        router.push("/");
       }
-      router.push("/");
     } catch (err: unknown) {
       console.error("Auth error:", err);
       const firebaseError = err as { code?: string; message?: string };
@@ -171,10 +239,14 @@ function AuthPageContent() {
 
           <div className="mb-5 sm:mb-6">
             <h2 className="font-headline-lg text-[24px] sm:text-[28px] lg:text-[32px] text-on-surface mb-1 leading-tight">
-              {isSignUp ? "Sign Up" : "Log In"}
+              {showForgotPassword ? "Reset Password" : isSignUp ? "Sign Up" : "Log In"}
             </h2>
             <p className="font-body-md text-[13px] sm:text-[14px] text-secondary">
-              {isSignUp ? "Create your account to start browsing and posting needs." : "Access your account to continue trading."}
+              {showForgotPassword 
+                ? "Enter your email to receive a recovery link." 
+                : isSignUp 
+                  ? "Create your account to start browsing and posting needs." 
+                  : "Access your account to continue trading."}
             </p>
           </div>
 
@@ -184,69 +256,122 @@ function AuthPageContent() {
             </div>
           )}
 
-          <form onSubmit={handleAuthSubmit} className="flex flex-col gap-3 sm:gap-4">
-            {isSignUp && (
+          {successMessage && (
+            <div className="mb-4 sm:mb-5 p-3 sm:p-3 border-2 border-black bg-green-100 text-green-800 text-xs font-meta-mono font-bold uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              SUCCESS: {successMessage}
+            </div>
+          )}
+
+          {showForgotPassword ? (
+            <form onSubmit={handleForgotPassword} className="flex flex-col gap-3 sm:gap-4">
               <div className="flex flex-col gap-1 sm:gap-1.5">
-                <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="fullName">
-                  Full Name
+                <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="resetEmail">
+                  Email
                 </label>
                 <input
-                  id="fullName"
-                  type="text"
-                  placeholder="JANE DOE"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required={isSignUp}
+                  id="resetEmail"
+                  type="email"
+                  placeholder="SYS@PINGBAZAR.COM"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                   className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
                 />
               </div>
-            )}
 
-            <div className="flex flex-col gap-1 sm:gap-1.5">
-              <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="email">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="SYS@PINGBAZAR.COM"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
-              />
-            </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary-container text-white border-2 border-black font-button-text text-[13px] sm:text-[14px] uppercase py-2.5 px-4 flex items-center justify-between neo-brutal-shadow transition-all duration-100 neo-brutal-hover neo-brutal-active mt-1 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+              >
+                <span>{loading ? "SENDING..." : "Send Reset Link"}</span>
+                {!loading && <span className="font-bold text-lg">&gt;</span>}
+              </button>
 
-            <div className="flex flex-col gap-1 sm:gap-1.5 mb-1 sm:mb-2">
-              <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="password">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary-container text-white border-2 border-black font-button-text text-[13px] sm:text-[14px] uppercase py-2.5 px-4 flex items-center justify-between neo-brutal-shadow transition-all duration-100 neo-brutal-hover neo-brutal-active mt-1 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
-            >
-              <span>{loading ? "PROCESSING..." : isSignUp ? "Create Account" : "Access System"}</span>
-              {!loading && <span className="font-bold text-lg">&gt;</span>}
-              {loading && (
-                <svg className="animate-spin-fast h-4 w-4 text-white" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                </svg>
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(false)}
+                className="text-primary-container font-bold text-xs uppercase hover:text-black transition-colors"
+              >
+                Back to Login
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleAuthSubmit} className="flex flex-col gap-3 sm:gap-4">
+              {isSignUp && (
+                <div className="flex flex-col gap-1 sm:gap-1.5">
+                  <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="fullName">
+                    Full Name
+                  </label>
+                  <input
+                    id="fullName"
+                    type="text"
+                    placeholder="JANE DOE"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required={isSignUp}
+                    className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
+                  />
+                </div>
               )}
-            </button>
-          </form>
+
+              <div className="flex flex-col gap-1 sm:gap-1.5">
+                <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="SYS@PINGBAZAR.COM"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1 sm:gap-1.5 mb-1 sm:mb-2">
+                <div className="flex justify-between items-center">
+                  <label className="font-button-text text-[11px] sm:text-[12px] text-on-surface uppercase font-bold" htmlFor="password">
+                    Password
+                  </label>
+                  {!isSignUp && (
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
+                      className="text-[10px] text-primary-container font-bold uppercase hover:text-black transition-colors"
+                    >
+                      Forgot?
+                    </button>
+                  )}
+                </div>
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full bg-surface-container border-2 border-black text-on-surface font-meta-mono text-[13px] sm:text-[14px] px-3 py-2 sm:px-3 sm:py-2.5 neo-brutal-shadow transition-all duration-100 neo-brutal-input"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary-container text-white border-2 border-black font-button-text text-[13px] sm:text-[14px] uppercase py-2.5 px-4 flex items-center justify-between neo-brutal-shadow transition-all duration-100 neo-brutal-hover neo-brutal-active mt-1 disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer"
+              >
+                <span>{loading ? "PROCESSING..." : isSignUp ? "Create Account" : "Access System"}</span>
+                {!loading && <span className="font-bold text-lg">&gt;</span>}
+                {loading && (
+                  <svg className="animate-spin-fast h-4 w-4 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                  </svg>
+                )}
+              </button>
+            </form>
+          )}
 
           <div className="relative flex items-center py-5 my-1">
             <div className="grow border-t-2 border-black"></div>
@@ -276,7 +401,10 @@ function AuthPageContent() {
             {isSignUp ? "ALREADY HAVE AN ACCOUNT?" : "NEED AN ACCOUNT?"}{" "}
             <button
               type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setShowForgotPassword(false);
+              }}
               className="text-primary-container font-bold border-b-2 border-primary-container hover:text-black hover:border-black transition-colors uppercase hover:cursor-pointer"
             >
               {isSignUp ? "LOGIN" : "SIGN UP"}

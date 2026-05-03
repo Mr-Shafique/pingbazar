@@ -9,6 +9,8 @@ import {
   onSnapshot,
   query,
   where,
+  doc,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import MapPickerModal from "./MapPickerModal";
@@ -145,34 +147,11 @@ export default function AuthenticatedHome({
     "location" | "request" | "feed" | "my-needs" | "seller-profile"
   >("location");
 
-  // Location / Search state - Use lazy initializers to avoid cascading renders
-  const [city, setCity] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_city") || "London";
-    }
-    return "London";
-  });
-
-  const [radius, setRadius] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_radius") || "10";
-    }
-    return "10";
-  });
-
-  const [lat, setLat] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_lat") || "51.5074";
-    }
-    return "51.5074";
-  });
-
-  const [lng, setLng] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_lng") || "-0.1278";
-    }
-    return "-0.1278";
-  });
+  // Location / Search state
+  const [city, setCity] = useState("London");
+  const [radius, setRadius] = useState("10");
+  const [lat, setLat] = useState("51.5074");
+  const [lng, setLng] = useState("-0.1278");
 
   // Post Request state
   const [requestTitle, setRequestTitle] = useState("");
@@ -199,26 +178,9 @@ export default function AuthenticatedHome({
   const [mountTime] = useState(Date.now());
 
   // Seller Profile / Responding state
-  const [shopName, setShopName] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_shop_name") || "";
-    }
-    return "";
-  });
-
-  const [shopPhone, setShopPhone] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_shop_phone") || "";
-    }
-    return "";
-  });
-
-  const [shopAddress, setShopAddress] = useState(() => {
-    if (typeof window !== "undefined") {
-      return localStorage.getItem("pingbazar_shop_address") || "";
-    }
-    return "";
-  });
+  const [shopName, setShopName] = useState("");
+  const [shopPhone, setShopPhone] = useState("");
+  const [shopAddress, setShopAddress] = useState("");
 
   const [respondingToRequest, setRespondingToRequest] =
     useState<ProductRequest | null>(null);
@@ -258,17 +220,26 @@ export default function AuthenticatedHome({
     setCustomAlert({ show: true, message, title, type });
   };
 
-  // Auto-close map picker if fulfillment modal opens
-  // useEffect(() => {
-  //   if (respondingToRequest) {
-  //     setShowMapPicker(false);
-  //   }
-  // }, [respondingToRequest]);
-
-  // Persistence of simple non-cascading state
+  // Sync user profile and settings from Firestore
   useEffect(() => {
-    localStorage.setItem("pingbazar_ignored_ids", JSON.stringify(ignoredRequestIds));
-  }, [ignoredRequestIds]);
+    if (!user) return;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const unsubUser = onSnapshot(userDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.shopName !== undefined) setShopName(data.shopName);
+        if (data.shopPhone !== undefined) setShopPhone(data.shopPhone);
+        if (data.shopAddress !== undefined) setShopAddress(data.shopAddress);
+        if (data.city !== undefined) setCity(data.city);
+        if (data.lat !== undefined) setLat(data.lat);
+        if (data.lng !== undefined) setLng(data.lng);
+        if (data.radius !== undefined) setRadius(data.radius);
+      }
+    });
+
+    return () => unsubUser();
+  }, [user]);
 
   // Set real-time Firestore listeners
   useEffect(() => {
@@ -390,7 +361,7 @@ export default function AuthenticatedHome({
     return R * c;
   }
 
-  const handleSaveCriteria = () => {
+  const handleSaveCriteria = async () => {
     if (!city || !lat || !lng) {
       triggerAlert(
         "Please fill in a valid city name, latitude and longitude.",
@@ -399,17 +370,27 @@ export default function AuthenticatedHome({
       );
       return;
     }
-    localStorage.setItem("pingbazar_city", city);
-    localStorage.setItem("pingbazar_radius", radius);
-    localStorage.setItem("pingbazar_lat", lat);
-    localStorage.setItem("pingbazar_lng", lng);
+    
+    try {
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          city,
+          lat,
+          lng,
+          radius
+        }, { merge: true });
+      }
 
-    triggerAlert(
-      "Search criteria updated! Nearby requests will now refresh in your feed.",
-      "Settings Saved",
-      "success",
-    );
-    setActiveTab("feed");
+      triggerAlert(
+        "Search criteria updated! Nearby requests will now refresh in your feed.",
+        "Settings Saved",
+        "success",
+      );
+      setActiveTab("feed");
+    } catch (err) {
+      console.error(err);
+      triggerAlert("Error saving criteria: " + err, "Save Failed", "error");
+    }
   };
 
   const handleMapLocationConfirm = (
@@ -423,10 +404,6 @@ export default function AuthenticatedHome({
       setCity(newCity || "Selected Location");
       setLat(newLat);
       setLng(newLng);
-      localStorage.setItem("pingbazar_city", newCity || "Selected Location");
-      localStorage.setItem("pingbazar_lat", newLat);
-      localStorage.setItem("pingbazar_lng", newLng);
-      localStorage.setItem("pingbazar_radius", radius);
     }
   };
 
@@ -485,15 +462,25 @@ export default function AuthenticatedHome({
     }
   };
 
-  const handleSaveSellerProfile = () => {
+  const handleSaveSellerProfile = async () => {
     if (!shopName || !shopPhone || !shopAddress) {
       triggerAlert("Please enter all seller information.", "Profile Incomplete", "error");
       return;
     }
-    localStorage.setItem("pingbazar_shop_name", shopName);
-    localStorage.setItem("pingbazar_shop_phone", shopPhone);
-    localStorage.setItem("pingbazar_shop_address", shopAddress);
-    triggerAlert("Seller details updated successfully!", "Profile Saved", "success");
+
+    try {
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          shopName,
+          shopPhone,
+          shopAddress
+        }, { merge: true });
+      }
+      triggerAlert("Seller details updated successfully!", "Profile Saved", "success");
+    } catch (err) {
+      console.error(err);
+      triggerAlert("Error saving profile: " + err, "Save Failed", "error");
+    }
   };
 
   const handleConfirmResponse = async (e: React.FormEvent) => {
@@ -535,10 +522,6 @@ export default function AuthenticatedHome({
         response: "yes",
         createdAt: new Date().toISOString(),
       });
-
-      localStorage.setItem("pingbazar_shop_name", shopName);
-      localStorage.setItem("pingbazar_shop_phone", shopPhone);
-      localStorage.setItem("pingbazar_shop_address", shopAddress);
 
       setRespondingToRequest(null);
       triggerAlert(
