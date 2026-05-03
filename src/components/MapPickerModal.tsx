@@ -346,15 +346,15 @@ export default function MapPickerModal({
 
         {/* ── Search + GPS row ── */}
         <div className="flex gap-2 px-3 py-2.5 border-b-2 border-black bg-surface-container shrink-0">
-          <div className="relative grow">
-            <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-black text-[18px] pointer-events-none select-none z-10">
+          <div className="relative grow bg-white border-2 border-black focus-within:ring-2 focus-within:ring-primary-container transition-all">
+            <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-black text-[20px] pointer-events-none select-none z-20">
               search
             </span>
             <GMPPlaceAutocomplete
               ref={searchInputRef}
               placeholder="Search city, area, address…"
-              className="w-full border-2 border-black text-[13px] bg-white focus-within:ring-2 focus-within:ring-primary-container transition-all font-mono"
-              style={{ fontFamily: "Space Grotesk, monospace" }}
+              className="w-full h-[40px]"
+              style={{ color: 'black', backgroundColor: 'white' }}
             />
           </div>
           <button
@@ -512,16 +512,32 @@ export default function MapPickerModal({
         .animate-spin {
           animation: spin 0.6s linear infinite;
         }
+        gmp-place-autocomplete {
+          display: block;
+          width: 100%;
+        }
         gmp-place-autocomplete::part(input) {
           padding-left: 36px !important;
           padding-right: 12px !important;
-          padding-top: 10px !important;
-          padding-bottom: 10px !important;
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+          height: 40px !important;
           border: none !important;
-          font-size: 13px !important;
-          background: transparent !important;
-          font-family: inherit !important;
+          font-size: 15px !important;
+          color: #000000 !important;
+          -webkit-text-fill-color: #000000 !important;
+          background-color: #ffffff !important;
+          font-family: 'Space Grotesk', sans-serif !important;
           outline: none !important;
+        }
+        gmp-place-autocomplete::part(input)::placeholder {
+          color: #666666 !important;
+          -webkit-text-fill-color: #666666 !important;
+          opacity: 1 !important;
+        }
+        /* Hide the internal search icon as we use our own positioned material icon */
+        gmp-place-autocomplete::part(search-icon) {
+          display: none !important;
         }
       `}</style>
     </div>
