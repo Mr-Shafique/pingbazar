@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -108,7 +109,7 @@ export default function Home() {
           {/* Decorative Grid Background */}
           <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdHRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlNWUyZTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-60 z-0 pointer-events-none"></div>
 
-          <div className="w-full max-w-md bg-white border-[4px] border-black p-8 neo-brutal-shadow-lg z-10 flex flex-col gap-6">
+          <div className="w-full max-w-md bg-white border-4 border-black p-8 neo-brutal-shadow-lg z-10 flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <span className="w-12 h-12 bg-primary-container text-white border-2 border-black flex items-center justify-center neo-brutal-shadow-sm">
                 <span className="material-symbols-outlined">mark_email_unread</span>
@@ -117,7 +118,7 @@ export default function Home() {
             </div>
 
             <p className="font-body-md text-secondary leading-relaxed">
-              We've sent a verification link to <span className="font-bold text-black">{user.email}</span>. Please confirm your email inbox or spam folder to access the PingBazar protocol.
+              We&apos;ve sent a verification link to <span className="font-bold text-black">{user.email}</span>. Please confirm your email inbox or spam folder to access the PingBazar protocol.
             </p>
 
             {message && (
@@ -140,7 +141,7 @@ export default function Home() {
                 onClick={() => window.location.reload()}
                 className="w-full py-3 bg-white text-black font-button-text text-xs uppercase font-bold border-2 border-black hover:bg-zinc-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                I've Verified My Email
+                I&apos;ve Verified My Email
                 <span className="material-symbols-outlined text-[16px]">refresh</span>
               </button>
 
