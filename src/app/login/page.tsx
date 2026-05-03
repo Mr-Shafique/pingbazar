@@ -167,7 +167,6 @@ function AuthPageContent() {
             <Link href="/" className="font-headline-md text-[20px] sm:text-[28px] text-black italic tracking-tighter hover:cursor-pointer">
               PINGBAZAR
             </Link>
-            <span className="material-symbols-outlined text-primary-container text-2xl sm:text-3xl">bolt</span>
           </div>
 
           <div className="mb-5 sm:mb-6">

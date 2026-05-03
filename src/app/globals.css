@@ -152,17 +152,24 @@ body {
     font-weight: bold !important;
 }
 
-.material-symbols-outlined {
-    font-family: 'Material Symbols Outlined' !important;
-    font-weight: normal;
-    font-style: normal;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
+@layer components {
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined' !important;
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        font-variation-settings: 'wght' 400, 'opsz' 24;
+    }
+
+    /* Support for Tailwind weight utilities on icons */
+    .font-bold.material-symbols-outlined { font-variation-settings: 'wght' 700; }
+    .font-black.material-symbols-outlined { font-variation-settings: 'wght' 900; }
 }

@@ -31,7 +31,7 @@ export default function MyNeedsTab({ myNeeds, allResponses }: MyNeedsTabProps) {
             <span className="material-symbols-outlined text-4xl text-zinc-300">shopping_bag</span>
           </div>
           <h3 className="font-['Space_Grotesk'] text-xl font-black text-black uppercase mb-2">Inventory Empty</h3>
-          <p className="text-zinc-400 text-sm max-w-xs font-medium">You haven&apos;t broadcasted any needs yet. Head to the Broadcast tab to start.</p>
+          <p className="text-zinc-400 text-sm font-medium">You haven&apos;t broadcasted any needs yet. Head to the Broadcast tab to start.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-10">
