@@ -6,6 +6,38 @@ import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, sendEmailVerification, User } from "firebase/auth";
 import AuthenticatedHome from "@/components/AuthenticatedHome";
 
+const FLOATING_ICONS = [
+  { src: "/assets/3dicons/bag-front-color.svg", alt: "Bag", top: "15%", left: "10%", size: "w-16 sm:w-20 md:w-28", delay: "0s", duration: "6s", tilt: "rotate-12" },
+  { src: "/assets/3dicons/camera-front-color.svg", alt: "Camera", top: "25%", right: "8%", size: "w-24 sm:w-28 md:w-36", delay: "1s", duration: "7s", tilt: "-rotate-12" },
+  { src: "/assets/3dicons/computer-front-color.svg", alt: "Computer", top: "65%", left: "5%", size: "w-32 sm:w-36 md:w-48", delay: "2s", duration: "8s", tilt: "rotate-6" },
+  { src: "/assets/3dicons/headphone-front-color.svg", alt: "Headphone", top: "72%", right: "10%", size: "w-20 sm:w-24 md:w-32", delay: "0.5s", duration: "6.5s", tilt: "-rotate-45" },
+  { src: "/assets/3dicons/map-pin-front-color.svg", alt: "Location", top: "45%", left: "85%", size: "w-14 sm:w-16 md:w-20", delay: "1.5s", duration: "7.5s", tilt: "rotate-12" },
+  { src: "/assets/3dicons/money-bag-front-color.svg", alt: "Money", top: "10%", right: "20%", size: "w-28 sm:w-32 md:w-40", delay: "3s", duration: "9s", tilt: "-rotate-12" },
+  { src: "/assets/3dicons/bulb-front-color.svg", alt: "Bulb", top: "55%", left: "15%", size: "w-12 sm:w-14 md:w-16", delay: "2.5s", duration: "5.5s", tilt: "rotate-45" },
+  { src: "/assets/3dicons/target-front-color.svg", alt: "Target", top: "82%", left: "35%", size: "w-22 sm:w-26 md:w-32", delay: "4s", duration: "8.5s", tilt: "-rotate-6" },
+];
+
+function FloatingIcon({ icon }: { icon: typeof FLOATING_ICONS[0] }) {
+  return (
+    <div
+      className={`fixed ${icon.size} pointer-events-none z-10 animate-float transition-all select-none`}
+      style={{
+        top: icon.top,
+        left: icon.left,
+        right: icon.right,
+        animationDelay: icon.delay,
+        animationDuration: icon.duration,
+      }}
+    >
+      <img
+        src={icon.src}
+        alt={icon.alt}
+        className={`w-full h-auto drop-shadow-2xl ${icon.tilt}`}
+      />
+    </div>
+  );
+}
+
 export default function Home() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -85,7 +117,7 @@ export default function Home() {
             </div>
 
             <p className="font-body-md text-secondary leading-relaxed">
-              We've sent a verification link to <span className="font-bold text-black">{user.email}</span>. Please confirm your email to access the PingBazar protocol.
+              We've sent a verification link to <span className="font-bold text-black">{user.email}</span>. Please confirm your email inbox or spam folder to access the PingBazar protocol.
             </p>
 
             {message && (
@@ -129,6 +161,13 @@ export default function Home() {
   // Not Authenticated View (Landing/Guest View)
   return (
     <div className="bg-background text-on-background font-body-lg min-h-screen flex flex-col justify-between relative overflow-x-hidden selection:bg-primary-container selection:text-white">
+      {/* Floating 3D Icons */}
+      <div className="hidden sm:block">
+        {FLOATING_ICONS.map((icon, index) => (
+          <FloatingIcon key={index} icon={icon} />
+        ))}
+      </div>
+
       {/* Decorative Grid Background */}
       <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdHRoIGQ9Ik0gNDAgMCBMIDAgMCAwIDQwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlNWUyZTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')] opacity-60 z-0 pointer-events-none"></div>
 
